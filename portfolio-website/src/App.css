@@ -8,5 +8,33 @@
 }
 
 .cloud{
+    padding-left: 30%;
+}
+
+.thinking{
+    padding-left: 50%;
+}
+
+.image {
+    position:relative;
+}
+
+.tyler-happy {
+    padding-left: 10%;
+}
+
+.lightbulb {
+    padding-left: 30%;
+}
+
+.home-button{
     padding-left: 40%;
+}
+
+.text {
+    right: 35px;
+    position:absolute;
+    text-align:center;
+    top: 150px;
+    width: 100%
 }
