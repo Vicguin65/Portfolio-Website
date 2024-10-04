@@ -1,0 +1,13 @@
+(a) Create each component
+    (i) Projects
+        (1) time and how days ago feature
+    (ii) Education
+        (1) coursework
+        (2) transcript
+    (iii) Work Experience
+    (iv) Skills/Certifications
+    (v) Education
+        (1) high school
+        (2) undergrad
+
+(b) YouTube Feature
