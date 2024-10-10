@@ -6,10 +6,7 @@ import moon from "./assets/moon.jpg";
 import thinking from "./assets/thinking.png"
 import idea from "./assets/idea.png"
 import { Link } from "react-router-dom";
-
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-
-import "./App.css";
+import './App.css';
 
 function App() {
   return (
@@ -69,7 +66,7 @@ function App() {
       speed={1.5}
       >
         <div className="text-center">
-          <Link to={`home`} className="btn btn-success btn-lg">Click here to find out!</Link>
+          <Link to={`/home`} className="btn btn-success btn-lg">Click here to find out!</Link>
         </div>
       </ParallaxLayer>
     </Parallax>
