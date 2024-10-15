@@ -1,4 +1,7 @@
 (a) Create each component
+    (0) Home
+        (1) "click here for quick summary"
+        (2) "click here for indepth"
     (i) Projects
         (1) time and how days ago feature
     (ii) Education
