@@ -5,6 +5,7 @@ import App from './App';
 import './index.css';
 import HomePage from './pages/HomePage';
 import ProjectPage from './pages/ProjectPage';
+import ResumePage from './pages/ResumePage';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
     path: "/projects",
     element: <ProjectPage />,
   },
+  {
+    path: "/resume",
+    element: <ResumePage />
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
