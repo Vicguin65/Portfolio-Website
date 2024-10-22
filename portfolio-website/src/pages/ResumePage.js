@@ -2,6 +2,7 @@ import React from "react";
 import {Document, Page} from "react-pdf"
 import { useState } from "react";
 import { pdfjs } from 'react-pdf';
+import "react-pdf/dist/esm/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -19,7 +20,7 @@ function ResumePage() {
   return (
     <div>
       <Document file="./Tyler_Du_Resume.pdf" onLoadSuccess={()=>{}}>
-        <Page pageNumber={1} />
+        <Page pageNumber={1} renderTextLayer={false}/>
       </Document>
     </div>
   );
