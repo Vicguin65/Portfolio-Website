@@ -13,6 +13,17 @@ const projects = [
     endDate: new Date(),
   },
   {
+    title: "Dandy's World Discord Bot",
+    description:
+      "Dandy's World Discord Bot is a Discord Bot built in 3 days using the discord.py library. " +
+      "This bot is currently ran on a t3.micro Ubuntu server hosted on AWS. " +
+      "Inspired by a game on Roblox, this bot automates the creation of parties, text channels, and voice channels through slash commands.",
+    technologies: ["Python"],
+    codeLink: "https://github.com/Vicguin65/Dandy-World-Discord-Bot",
+    startDate: new Date(2024, 9, 16),
+    endDate: new Date(2024, 9, 19),
+  },
+  {
     title: "Accessible Routes",
     description:
       "Accessible Routes was a website that was worked on during Fall 2023 and Spring 2024. " +
