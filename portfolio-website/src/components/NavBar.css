@@ -8,18 +8,18 @@
   flex-direction: row;
 }
 
-a:link {
+.navbar-container a:link {
   color: #262720;
 }
 
-a:visited {
+.navbar-container a:visited {
   color: #ffffff;
 }
 
-a:hover {
+.navbar-container a:hover {
   color: #728bad;
 }
 
-a:active {
+.navbar-container a:active {
   color: black;
 }
