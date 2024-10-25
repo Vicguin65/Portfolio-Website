@@ -1,0 +1,9 @@
+.pdf-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  max-height: 80vh; /* Adjust as needed */
+  cursor: zoom-in;
+  padding-top: 4%;
+}

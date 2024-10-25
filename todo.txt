@@ -12,5 +12,5 @@
     (v) Education
         (1) high school
         (2) undergrad
-
+    (vi) Navbar
 (b) YouTube Feature
