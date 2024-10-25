@@ -1,0 +1,25 @@
+.navbar-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: #626b78;
+  color: #fff;
+  padding: 1rem;
+  margin-bottom: 2%;
+  flex-direction: row;
+}
+
+a:link {
+  color: #262720;
+}
+
+a:visited {
+  color: #ffffff;
+}
+
+a:hover {
+  color: #728bad;
+}
+
+a:active {
+  color: black;
+}

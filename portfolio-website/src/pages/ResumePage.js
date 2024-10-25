@@ -3,6 +3,7 @@ import { Document, Page } from "react-pdf";
 import { useState } from "react";
 import { pdfjs } from "react-pdf";
 import "./ResumePage.css";
+import NavBar from "../components/NavBar";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -29,32 +30,35 @@ function ResumePage() {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <Document file="./Resume_Tyler_Du.pdf">
+    <div>
+      <NavBar/>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <Document file="./Resume_Tyler_Du.pdf">
+          <div
+            onClick={toggleZoom}
+            className="pdf-container"
+            style={{
+              cursor: "zoom-in", // Show zoom-in cursor when not zoomed
+              transform: isZoomed ? "scale(1.5)" : "scale(1)", // Adjust scale factor
+              transition: "transform 0.3s ease",
+            }}
+          >
+            <Page pageNumber={1} renderTextLayer={false} />
+          </div>
+        </Document>
+
         <div
-          onClick={toggleZoom}
-          className="pdf-container"
           style={{
-            cursor: "zoom-in", // Show zoom-in cursor when not zoomed
-            transform: isZoomed ? "scale(1.5)" : "scale(1)", // Adjust scale factor
-            transition: "transform 0.3s ease",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Page pageNumber={1} renderTextLayer={false} />
+          <button style={{}} onClick={handleDownload}>
+            Click here to download Resume!
+          </button>
         </div>
-      </Document>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <button style={{}} onClick={handleDownload}>
-          Click here to download Resume!
-        </button>
       </div>
     </div>
   );

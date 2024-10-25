@@ -1,11 +1,15 @@
 import React from "react";
 import "./ProjectPage.css"; // Importing the external CSS file
+import NavBar from "../components/NavBar";
 
 const {projects} = require("../components/projects")
 
 
 const ProjectPage = () => {
   return (
+    <div>
+<NavBar></NavBar>
+    
     <div className="container">
       <h1 className="header">What are Tyler's Projects?</h1>
       <div className="projectsContainer">
@@ -39,6 +43,7 @@ const ProjectPage = () => {
           </div>
         ))}
       </div>
+    </div>
     </div>
   );
 };
