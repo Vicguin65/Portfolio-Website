@@ -2,7 +2,7 @@ import React from "react";
 import { Document, Page } from "react-pdf";
 import { useState } from "react";
 import { pdfjs } from "react-pdf";
-import "./ResumePage.css";
+import styles from "./ResumePage.module.css";
 import NavBar from "../components/NavBar";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -36,7 +36,7 @@ function ResumePage() {
         <Document file="./Resume_Tyler_Du.pdf">
           <div
             onClick={toggleZoom}
-            className="pdf-container"
+            className={styles['pdf-container']}
             style={{
               cursor: "zoom-in", // Show zoom-in cursor when not zoomed
               transform: isZoomed ? "scale(1.5)" : "scale(1)", // Adjust scale factor

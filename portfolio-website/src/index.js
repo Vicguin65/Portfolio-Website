@@ -6,6 +6,7 @@ import './index.css';
 import HomePage from './pages/HomePage';
 import ProjectPage from './pages/ProjectPage';
 import ResumePage from './pages/ResumePage';
+import ContactPage from './pages/ContactPage';
 import reportWebVitals from './reportWebVitals';
 
 const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/resume",
     element: <ResumePage />
+  },
+  {
+    path: "/contact",
+    element: <ContactPage/>
   }
 ]);
 
