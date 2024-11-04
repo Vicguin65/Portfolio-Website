@@ -1,73 +1,56 @@
+// App.js
+import React from "react";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
-import tyler from "./assets/tyler-removebg-preview.png";
-import thought from "./assets/thoughtbubble.png";
-import land from "./assets/landbetter.jpg";
-import moon from "./assets/moon.jpg";
-import thinking from "./assets/thinking.png"
-import idea from "./assets/idea.png"
 import { Link } from "react-router-dom";
-import './App.css';
+import thoughtBubble from "./assets/thoughtbubble.png"; // Thought bubble image
+import "./App.css";
 
 function App() {
   return (
-    <Parallax pages={5}>
+    <Parallax pages={4} style={{ backgroundColor: "#090904" }}>
+      {/* Background layer */}
+      <ParallaxLayer offset={0} speed={1} className="background-layer">
+        <h1 className="title">Welcome to Tyler's World</h1>
+      </ParallaxLayer>
+
+      {/* Question Layer 1 */}
       <ParallaxLayer
-        offset={0}
-        speed={1}
-        factor={2.1}
-        style={{
-          backgroundImage: `url(${moon})`,
-          backgroundSize: "cover",
-        }}
-      ></ParallaxLayer>
+        offset={0.7}
+        speed={0.8}
+        factor={1.1}
+        className="background-layer question-layer cloud"
+      >
+        <h2 className="question-text">Who is Tyler?</h2>
+      </ParallaxLayer>
+
+      {/* Question Layer 2 */}
+      <ParallaxLayer
+        offset={1.3}
+        speed={0.7}
+        factor={1.1}
+        className="background-layer question-layer cloud"
+      >
+        <h2 className="question-text">What does Tyler develop?</h2>
+      </ParallaxLayer>
+
+      {/* Question Layer 3 */}
+      <ParallaxLayer
+        offset={2}
+        speed={0.6}
+        factor={1.1}
+        className="background-layer question-layer cloud"
+      >
+        <h2 className="question-text">Where is Tyler going?</h2>
+      </ParallaxLayer>
+
       <ParallaxLayer
         offset={3}
-        speed={1}
-        factor={3}
-        style={{
-          backgroundImage: `url(${land})`,
-          backgroundSize: "cover",
-        }}
-      ></ParallaxLayer>
-      <ParallaxLayer
-        className="linear-gradient"
-        offset={1}
-        factor={4.1}
-        speed={1}
-      ></ParallaxLayer>
-      <ParallaxLayer className="cloud" 
-        offset={0.35}
-        speed={0.1}
-        >
-        <img src={thought} className="img-fluid image" alt="..."></img>
-        <h1 className="text">Who is Tyler Du?</h1>
-      </ParallaxLayer>
-      <ParallaxLayer sticky={{ start: 0.5, end: 1.9 }} className="thinking" 
-       offset={0.6}
-       >
-        <img src={thinking} alt="..." />
-      </ParallaxLayer>
-      <ParallaxLayer
-        offset={4}
-        speed={1.2}
-        className="tyler-happy"
+        speed={0}
+        className="background-layer question-layer"
       >
-        <img src={tyler} alt="tyler_happy" />
-      </ParallaxLayer>
-      <ParallaxLayer
-      offset={4}
-      speed={1.1}
-      className="lightbulb"
-      >
-        <img src={idea} alt="lightbulb"/>
-      </ParallaxLayer>
-      <ParallaxLayer
-      offset={4.4}
-      speed={1.5}
-      >
-        <div className="text-center">
-          <Link to={`/home`} className="btn btn-success btn-lg">Click here to find out!</Link>
-        </div>
+        <Link to={`/home`} className="bottom-button button-link">
+          Click here to find out!
+        </Link>
       </ParallaxLayer>
     </Parallax>
   );

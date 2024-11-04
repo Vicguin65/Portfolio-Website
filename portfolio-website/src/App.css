@@ -1,38 +1,95 @@
-.App {
+/* App.css */
+
+/* Basic Reset */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: "Arial", sans-serif;
+  color: #090904;
+  overflow-x: hidden;
+}
+
+/* Background Layer */
+.background-layer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #090904; /* Dark background */
+}
+
+.title {
+  color: #f0f8ff;
+  font-size: 3em;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Thought Bubble */
+.thought-bubble-layer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.thought-bubble {
+  width: 150px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.bottom-button {
+  background-color: #c8cec9;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.bottom-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.bottom-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Link Styles */
+.button-link {
+  color: #ffffff;
+  font-size: 1.25em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Question Layers with Cloud Background */
+.cloud {
+  background-image: url("./assets/thoughtbubble.png"); /* Path to cloud image */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 40px; /* Adds space around question text */
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.question-text {
+  font-size: 2em;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+  border-radius: 8px;
 }
