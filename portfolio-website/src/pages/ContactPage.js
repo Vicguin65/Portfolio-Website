@@ -8,6 +8,7 @@ const ContactPage = () => {
     <div>
         <NavBar/>
         <h1 className={styles.header}>Contact Me</h1>
+        <h2>CURRENTLY IN DEVELOPMENT</h2>
         {/* TO DO: Connect with backend */}
       <form onSubmit={() => {}}>
         <div>
