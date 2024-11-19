@@ -124,5 +124,26 @@ const diff_text = (dt2, dt1) => {
   return diff_text;
 }
 
+const date_string = (dt) =>{
+  const date = dt.getDate();
+  const month = dt.getMonth();
+  const year = dt.getFullYear();
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  var date_str = "";
+  date_str += months[month] + " " + date + ", " + year;
+  return date_str
+}
+
+const same_date = (date1, date2) => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+
 exports.projects = projects;
 exports.diff_text = diff_text;
+exports.date_string = date_string;
+exports.same_date = same_date;

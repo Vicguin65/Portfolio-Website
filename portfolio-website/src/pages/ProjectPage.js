@@ -1,8 +1,8 @@
 import React from "react";
-import "./ProjectPage.css"; 
+import "./ProjectPage.css";
 import NavBar from "../components/NavBar";
 
-const { projects, diff_text } = require("../components/projects");
+const { projects, diff_text, date_string, same_date } = require("../components/projects");
 
 const ProjectPage = () => {
   return (
@@ -38,16 +38,12 @@ const ProjectPage = () => {
                     View Project
                   </a>
                 ) : null}
-                <h5>
-                  {"Project Start Date: " + project.startDate.toDateString()}
-                </h5>
-                <h5>
-                {"Project End Date: " + project.endDate.toDateString()}
-                </h5>
+                <h5>{"Project Start Date: " + date_string(project.startDate)}</h5>
+                <h5>{same_date(new Date(), project.endDate) ? "Project is actively being worked on!" : "Project End Date: " + date_string(project.endDate)}</h5>
                 <h2>
-                {"Project Duration: " + diff_text(project.startDate, project.endDate) }
+                  {"Project Duration: " +
+                    diff_text(project.startDate, project.endDate)}
                 </h2>
-                
               </div>
             ))}
         </div>
