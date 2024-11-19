@@ -2,7 +2,6 @@
 import React from "react";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { Link } from "react-router-dom";
-import thoughtBubble from "./assets/thoughtbubble.png"; // Thought bubble image
 import "./App.css";
 
 function App() {
