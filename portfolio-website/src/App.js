@@ -40,7 +40,7 @@ function App() {
         factor={1.1}
         className="background-layer question-layer cloud"
       >
-        <h2 className="question-text">Where is Tyler going?</h2>
+        <h2 className="question-text">What does Tyler enjoy doing?</h2>
       </ParallaxLayer>
 
       <ParallaxLayer
