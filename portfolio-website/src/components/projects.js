@@ -31,7 +31,7 @@ const projects = [
     technologies: ["React", "Django", "CSS", "AWS EC2"],
     codeLink: "https://github.com/Accessible-Routes",
     startDate: new Date(2023, 8),
-    endDate: new Date(),
+    endDate: new Date(2024, 10, 16),
   },
   {
     title: "REST API For AWS Identity Store",
@@ -86,4 +86,43 @@ const projects = [
   },
 ];
 
+const diff_text = (dt2, dt1) => {
+  // Calculate the difference in milliseconds between the two dates
+  var diff_ms = Math.abs(dt2.getTime() - dt1.getTime()) / 1000;
+
+  var diff_days = diff_ms / (60 * 60 * 24);
+  var diff_months = 0;
+  var diff_years = 0; 
+  if(diff_days > 30){
+    diff_months = diff_days/30;
+    diff_days %= 30;
+  }
+
+  if(diff_months > 12){
+    diff_years = diff_months / 12;
+    diff_months %= 12;
+  }
+
+  var diff_text = "";
+  diff_years = Math.round(diff_years);
+  diff_months = Math.round(diff_months);
+  diff_days = Math.round(diff_days);
+  
+  if(diff_years > 0){
+    diff_text += diff_years + " years, ";
+  }
+
+  if(diff_months > 0){
+    diff_text += diff_months + " months, ";
+  }
+
+  if(diff_days > 0){
+    diff_text += diff_days + " days"
+  }
+
+  // Calculate the approximate number of years by dividing the difference in days by the average number of days in a year (365.25)
+  return diff_text;
+}
+
 exports.projects = projects;
+exports.diff_text = diff_text;

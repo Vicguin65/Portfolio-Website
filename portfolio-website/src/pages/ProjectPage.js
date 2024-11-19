@@ -2,7 +2,7 @@ import React from "react";
 import "./ProjectPage.css"; 
 import NavBar from "../components/NavBar";
 
-const { projects } = require("../components/projects");
+const { projects, diff_text } = require("../components/projects");
 
 const ProjectPage = () => {
   return (
@@ -38,9 +38,16 @@ const ProjectPage = () => {
                     View Project
                   </a>
                 ) : null}
-                {/* TODO: change how this is visualized */}
-                {project.endDate.getTime()}
-                {/* {project.endDate.toString()} */}
+                <h5>
+                  {"Project Start Date: " + project.startDate.toDateString()}
+                </h5>
+                <h5>
+                {"Project End Date: " + project.endDate.toDateString()}
+                </h5>
+                <h2>
+                {"Project Duration: " + diff_text(project.startDate, project.endDate) }
+                </h2>
+                
               </div>
             ))}
         </div>
