@@ -31,12 +31,12 @@ function ResumePage() {
 
   return (
     <div>
-      <NavBar/>
+      <NavBar />
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Document file="./Resume_Tyler_Du.pdf">
           <div
             onClick={toggleZoom}
-            className={styles['pdf-container']}
+            className={styles["pdf-container"]}
             style={{
               cursor: "zoom-in", // Show zoom-in cursor when not zoomed
               transform: isZoomed ? "scale(1.5)" : "scale(1)", // Adjust scale factor
