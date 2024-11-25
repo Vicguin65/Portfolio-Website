@@ -8,6 +8,7 @@ import ProjectPage from './pages/ProjectPage';
 import ResumePage from './pages/ResumePage';
 import ContactPage from './pages/ContactPage';
 import reportWebVitals from './reportWebVitals';
+import NotFoundPage from './pages/NotFoundPage';
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: "/contact",
     element: <ContactPage/>
+  },
+  {
+    path: "*",
+    element: <NotFoundPage/>
   }
 ]);
 
