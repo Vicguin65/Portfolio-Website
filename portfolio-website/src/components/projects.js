@@ -36,7 +36,7 @@ const projects = [
   {
     title: "REST API For AWS Identity Store",
     description:
-      "This is a description of project 2. It involves data science and AI.",
+      "This was project worked on during Spring 2024. This was an open-source project in collaboration with IBM's cloud team.",
     technologies: ["Python", "AWS Lambda", "AWS CloudFormation"],
     codeLink: "https://github.com/Vicguin65/IBM-Identity-Center-API",
     startDate: new Date(2024, 0),
@@ -92,13 +92,13 @@ const diff_text = (dt2, dt1) => {
 
   var diff_days = diff_ms / (60 * 60 * 24);
   var diff_months = 0;
-  var diff_years = 0; 
-  if(diff_days > 30){
-    diff_months = diff_days/30;
+  var diff_years = 0;
+  if (diff_days > 30) {
+    diff_months = diff_days / 30;
     diff_days %= 30;
   }
 
-  if(diff_months > 12){
+  if (diff_months > 12) {
     diff_years = diff_months / 12;
     diff_months %= 12;
   }
@@ -107,33 +107,46 @@ const diff_text = (dt2, dt1) => {
   diff_years = Math.round(diff_years);
   diff_months = Math.round(diff_months);
   diff_days = Math.round(diff_days);
-  
-  if(diff_years > 0){
+
+  if (diff_years > 0) {
     diff_text += diff_years + " years, ";
   }
 
-  if(diff_months > 0){
+  if (diff_months > 0) {
     diff_text += diff_months + " months, ";
   }
 
-  if(diff_days > 0){
-    diff_text += diff_days + " days"
+  if (diff_days > 0) {
+    diff_text += diff_days + " days";
   }
 
   // Calculate the approximate number of years by dividing the difference in days by the average number of days in a year (365.25)
   return diff_text;
-}
+};
 
-const date_string = (dt) =>{
+const date_string = (dt) => {
   const date = dt.getDate();
   const month = dt.getMonth();
   const year = dt.getFullYear();
-  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   var date_str = "";
   date_str += months[month] + " " + date + ", " + year;
-  return date_str
-}
+  return date_str;
+};
 
 const same_date = (date1, date2) => {
   return (
@@ -141,7 +154,7 @@ const same_date = (date1, date2) => {
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
-}
+};
 
 exports.projects = projects;
 exports.diff_text = diff_text;
