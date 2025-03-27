@@ -43,13 +43,11 @@ const ProjectPage = () => {
                     View Project
                   </a>
                 ) : null}
-                <h5>
-                  {"Project Start Date: " + date_string(project.startDate)}
-                </h5>
+                <h5>{"Start Date: " + date_string(project.startDate)}</h5>
                 <h5>
                   {same_date(new Date(), project.endDate)
                     ? "Project is actively being worked on!"
-                    : "Project End Date: " + date_string(project.endDate)}
+                    : "End Date: " + date_string(project.endDate)}
                 </h5>
                 <h2>
                   {"Project Duration: " +

@@ -10,7 +10,7 @@ function HomePage() {
       <section className="container">
         <h1>Well... Who is Tyler?</h1>
         <p>
-          Hey there! I’m Tyler – a curious developer, computer science
+          Hey there! I’m Tyler Du – a curious developer, computer science
           enthusiast, and problem-solver. From coding up web apps to diving into
           open-source, I love creating and solving problems with code. Take a
           look around to see my journey, projects, and what keeps me excited
