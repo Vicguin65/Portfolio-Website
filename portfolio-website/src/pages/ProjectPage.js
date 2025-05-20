@@ -1,6 +1,7 @@
 import React from "react";
 import "./ProjectPage.css";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 const {
   projects,
@@ -12,7 +13,7 @@ const {
 const ProjectPage = () => {
   return (
     <div>
-      <NavBar></NavBar>
+      <NavBar />
 
       <div className="container">
         <h1 className="header">What are Tyler's Projects?</h1>
@@ -57,6 +58,7 @@ const ProjectPage = () => {
             ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

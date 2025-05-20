@@ -1,11 +1,16 @@
 .navbar-container {
   display: flex;
   justify-content: space-around;
-  background-color: #626b78;
+  background-color: #0a0a23;
   color: #fff;
   padding: 1rem;
   margin-bottom: 2%;
   flex-direction: row;
+}
+
+.navbar-container a {
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .navbar-container a:link {

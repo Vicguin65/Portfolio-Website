@@ -4,6 +4,7 @@ import { useState } from "react";
 import { pdfjs } from "react-pdf";
 import styles from "./ResumePage.module.css";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -32,6 +33,10 @@ function ResumePage() {
   return (
     <div>
       <NavBar />
+      <button style={{}} onClick={handleDownload}>
+        Click here to download Resume!
+      </button>
+
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Document file="./Resume_Tyler_Du.pdf">
           <div
@@ -54,12 +59,9 @@ function ResumePage() {
             justifyContent: "center",
             alignItems: "center",
           }}
-        >
-          <button style={{}} onClick={handleDownload}>
-            Click here to download Resume!
-          </button>
-        </div>
+        ></div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -2,13 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import "./HomePage.css";
+import Footer from "../components/Footer";
 
 function HomePage() {
   return (
     <div>
       <NavBar />
-      <section className="container">
+      <section>
         <h1>Well... Who is Tyler?</h1>
+
         <p>
           Hey there! I’m Tyler Du – a curious developer, computer science
           enthusiast, and problem-solver. From coding up web apps to diving into
@@ -26,6 +28,7 @@ function HomePage() {
           </Link>
         </div>
       </section>
+      <Footer />
     </div>
   );
 }
