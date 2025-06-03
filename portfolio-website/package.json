@@ -11,7 +11,8 @@
     "react-dom": "^18.3.1",
     "react-icons": "^5.5.0",
     "react-pdf": "^9.1.1",
-    "react-router-dom": "^6.26.2",
+    "react-router": "^7.6.1",
+    "react-router-dom": "^6.30.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -19,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "preview:worker": "npm run build && wrangler dev",
+    "deploy:worker": "npm run build && wrangler deploy"
   },
   "eslintConfig": {
     "extends": [
