@@ -22,8 +22,6 @@ const handleDownload = () => {
 };
 
 function ResumePage() {
-  const [numPages, setNumPages] = useState(1);
-  const [pageNumber, setPageNumber] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
 
   const toggleZoom = () => {
