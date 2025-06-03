@@ -14,7 +14,7 @@
 }
 
 .navbar-container a:link {
-  color: #262720;
+  color: #ffffff;
 }
 
 .navbar-container a:visited {
@@ -26,5 +26,5 @@
 }
 
 .navbar-container a:active {
-  color: black;
+  color: #ffffff;
 }
