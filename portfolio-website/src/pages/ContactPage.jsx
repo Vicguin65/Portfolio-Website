@@ -5,17 +5,35 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import styles from './ContactPage.module.css';
 
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+
 const ContactPage = () => {
   const [form,      setForm]      = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [loading,   setLoading]   = useState(false);
+  const [error,     setError]     = useState(false);
 
   const handleChange = e =>
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // TODO Phase 2: POST to FastAPI backend
-    setSubmitted(true);
+    setLoading(true);
+    setError(false);
+    try {
+      const res = await fetch(`${API_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Contact form error:', err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -108,8 +126,17 @@ const ContactPage = () => {
                     className={styles.textarea}
                   />
                 </div>
-                <button type="submit" className={`btn-primary ${styles.submitBtn}`}>
-                  Send message →
+                {error && (
+                  <p className={styles.errorMsg}>
+                    Something went wrong — please try emailing me directly at tyleryeedu@gmail.com.
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className={`btn-primary ${styles.submitBtn}`}
+                  disabled={loading}
+                >
+                  {loading ? 'Sending…' : 'Send message →'}
                 </button>
               </form>
             )}
