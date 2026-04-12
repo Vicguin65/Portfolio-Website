@@ -27,3 +27,14 @@ variable "recipient_email" {
   description = "Email address that receives contact form messages"
   type        = string
 }
+
+variable "anthropic_api_key" {
+  description = "Anthropic API key for the Ask Tyler agent"
+  type        = string
+  sensitive   = true
+}
+
+variable "resume_bucket" {
+  description = "S3 bucket name where Resume_Tyler_Du.pdf is stored"
+  type        = string
+}

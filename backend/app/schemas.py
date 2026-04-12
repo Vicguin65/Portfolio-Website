@@ -10,3 +10,11 @@ class ContactRequest(BaseModel):
 class ContactResponse(BaseModel):
     success: bool
     message: str
+
+
+class AskRequest(BaseModel):
+    job_description: str
+
+
+class AskResponse(BaseModel):
+    response: str

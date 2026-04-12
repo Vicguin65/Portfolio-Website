@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import ProjectPage from './pages/ProjectPage';
 import ResumePage from './pages/ResumePage';
 import ContactPage from './pages/ContactPage';
+import AskTylerPage from './pages/AskTylerPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 const router = createBrowserRouter([
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
   { path: '/projects', element: <ProjectPage /> },
   { path: '/resume',  element: <ResumePage /> },
   { path: '/contact', element: <ContactPage /> },
+  { path: '/ask',     element: <AskTylerPage /> },
   { path: '*',        element: <NotFoundPage /> },
 ]);
 

@@ -71,4 +71,6 @@ module "api" {
   api_domain         = var.api_subdomain
   sender_email       = var.sender_email
   recipient_email    = var.recipient_email
+  anthropic_api_key  = var.anthropic_api_key
+  resume_bucket      = var.domain_name
 }

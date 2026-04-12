@@ -20,10 +20,16 @@ venv/
 # .terraform.lock.hcl IS committed (pins provider versions)
 .terraform/
 *.tfplan
+tfplan
+*.tfvars
 terraform.tfstate
 terraform.tfstate.backup
 infrastructure/terraform/.build/
 infrastructure/terraform/.lambda.zip
+
+# ── Assets hosted on S3, not tracked in git ───────────────────────
+portfolio-website/public/Resume_Tyler_Du.pdf
+portfolio-website/public/tyler.jpg
 
 # ── Test coverage ─────────────────────────────────────────────────
 coverage/

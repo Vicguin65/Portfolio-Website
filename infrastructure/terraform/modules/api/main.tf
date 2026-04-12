@@ -43,6 +43,21 @@ resource "aws_iam_role_policy" "ses" {
   policy = data.aws_iam_policy_document.ses.json
 }
 
+# S3: read resume PDF
+data "aws_iam_policy_document" "s3_resume" {
+  statement {
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::${var.resume_bucket}/Resume_Tyler_Du.pdf"]
+  }
+}
+
+resource "aws_iam_role_policy" "s3_resume" {
+  name   = "${local.fn_name}-s3-resume"
+  role   = aws_iam_role.lambda.id
+  policy = data.aws_iam_policy_document.s3_resume.json
+}
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Lambda
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -59,9 +74,10 @@ resource "aws_lambda_function" "api" {
 
   environment {
     variables = {
-      SENDER_EMAIL    = var.sender_email
-      RECIPIENT_EMAIL = var.recipient_email
-      SES_REGION      = "us-east-1"
+      SENDER_EMAIL      = var.sender_email
+      RECIPIENT_EMAIL   = var.recipient_email
+      SES_REGION        = "us-east-1"
+      ANTHROPIC_API_KEY = var.anthropic_api_key
     }
   }
 }

@@ -40,7 +40,7 @@ function HomePage() {
           <div className="about-photo-col">
             <div className="about-photo-frame">
               <img
-                src="/tyler-removebg-preview.png"
+                src="https://whoistylerdu.com/tyler.jpg"
                 alt="Tyler Du"
                 className="about-photo"
               />

@@ -24,7 +24,9 @@ echo "▶ Syncing to s3://$S3_BUCKET ..."
 aws s3 sync dist/ "s3://$S3_BUCKET/" \
   --delete \
   --cache-control "public, max-age=31536000, immutable" \
-  --exclude "index.html"
+  --exclude "index.html" \
+  --exclude "Resume_Tyler_Du.pdf" \
+  --exclude "tyler.jpg"
 
 # index.html should not be cached so browsers always get the latest shell
 aws s3 cp dist/index.html "s3://$S3_BUCKET/index.html" \

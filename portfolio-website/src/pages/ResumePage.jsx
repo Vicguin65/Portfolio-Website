@@ -23,7 +23,7 @@ function ResumePage() {
             <h1 className={styles.title}>Tyler Du</h1>
           </div>
           <a
-            href="/Resume_Tyler_Du.pdf"
+            href="https://whoistylerdu.com/Resume_Tyler_Du.pdf"
             download="Resume_Tyler_Du.pdf"
             className="btn-primary"
           >
@@ -38,7 +38,7 @@ function ResumePage() {
             style={{ cursor: zoomed ? 'zoom-out' : 'zoom-in' }}
             title={zoomed ? 'Click to zoom out' : 'Click to zoom in'}
           >
-            <Document file="/Resume_Tyler_Du.pdf">
+            <Document file="https://whoistylerdu.com/Resume_Tyler_Du.pdf">
               <Page
                 pageNumber={1}
                 renderTextLayer={false}

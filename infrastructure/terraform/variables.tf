@@ -33,3 +33,9 @@ variable "recipient_email" {
   type        = string
   default     = "tyleryeedu@gmail.com"
 }
+
+variable "anthropic_api_key" {
+  description = "Anthropic API key for the Ask Tyler agent"
+  type        = string
+  sensitive   = true
+}

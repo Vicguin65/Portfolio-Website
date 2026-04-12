@@ -7,6 +7,7 @@ const links = [
   { to: '/projects', label: 'Projects' },
   { to: '/resume',   label: 'Resume' },
   { to: '/contact',  label: 'Contact' },
+  { to: '/ask',      label: 'Ask Tyler' },
 ];
 
 const NavBar = () => {
