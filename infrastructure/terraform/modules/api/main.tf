@@ -43,12 +43,16 @@ resource "aws_iam_role_policy" "ses" {
   policy = data.aws_iam_policy_document.ses.json
 }
 
-# S3: read resume PDF
+# S3: read resume PDF, knowledge base, and media data
 data "aws_iam_policy_document" "s3_resume" {
   statement {
-    effect    = "Allow"
-    actions   = ["s3:GetObject"]
-    resources = ["arn:aws:s3:::${var.resume_bucket}/Resume_Tyler_Du.pdf"]
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+    resources = [
+      "arn:aws:s3:::${var.resume_bucket}/Resume_Tyler_Du.pdf",
+      "arn:aws:s3:::${var.resume_bucket}/knowledge_base.md",
+      "arn:aws:s3:::${var.resume_bucket}/media.json",
+    ]
   }
 }
 

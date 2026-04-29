@@ -32,26 +32,26 @@ resource "null_resource" "lambda_build" {
     interpreter = ["bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
-      BUILD="${path.root}/.build"
+      BUILD="${abspath(path.root)}/.build"
       rm -rf "$BUILD" && mkdir -p "$BUILD"
       pip install \
-        -r "${path.root}/../../backend/requirements.txt" \
+        -r "${abspath(path.root)}/../../backend/requirements.txt" \
         -t "$BUILD/" \
         --platform manylinux2014_x86_64 \
         --only-binary=:all: \
         --implementation cp \
         --python-version 312 \
         --quiet
-      cp -r "${path.root}/../../backend/app" "$BUILD/"
-      cp "${path.root}/../../backend/lambda_function.py" "$BUILD/"
+      cp -r "${abspath(path.root)}/../../backend/app" "$BUILD/"
+      cp "${abspath(path.root)}/../../backend/lambda_function.py" "$BUILD/"
     EOT
   }
 }
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = "${path.root}/.build"
-  output_path = "${path.root}/.lambda.zip"
+  source_dir  = "${abspath(path.root)}/.build"
+  output_path = "${abspath(path.root)}/.lambda.zip"
   depends_on  = [null_resource.lambda_build]
 }
 

@@ -8,16 +8,20 @@ import ProjectPage from './pages/ProjectPage';
 import ResumePage from './pages/ResumePage';
 import ContactPage from './pages/ContactPage';
 import AskTylerPage from './pages/AskTylerPage';
+import MediaPage from './pages/MediaPage';
+import MediaDetailPage from './pages/MediaDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 const router = createBrowserRouter([
-  { path: '/',        element: <App /> },
-  { path: '/home',    element: <HomePage /> },
-  { path: '/projects', element: <ProjectPage /> },
-  { path: '/resume',  element: <ResumePage /> },
-  { path: '/contact', element: <ContactPage /> },
-  { path: '/ask',     element: <AskTylerPage /> },
-  { path: '*',        element: <NotFoundPage /> },
+  { path: '/',              element: <App /> },
+  { path: '/home',          element: <HomePage /> },
+  { path: '/projects',      element: <ProjectPage /> },
+  { path: '/resume',        element: <ResumePage /> },
+  { path: '/contact',       element: <ContactPage /> },
+  { path: '/ask',           element: <AskTylerPage /> },
+  { path: '/features',      element: <MediaPage /> },
+  { path: '/features/:slug', element: <MediaDetailPage /> },
+  { path: '*',              element: <NotFoundPage /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -20,13 +20,23 @@ echo "▶ Building React app..."
 cd "$FRONTEND_DIR"
 npm run build
 
+echo "▶ Exporting media data..."
+node scripts/export-media.mjs
+aws s3 cp media.json "s3://$S3_BUCKET/media.json" \
+  --cache-control "no-cache, no-store, must-revalidate" \
+  --region us-west-1
+rm media.json
+
 echo "▶ Syncing to s3://$S3_BUCKET ..."
 aws s3 sync dist/ "s3://$S3_BUCKET/" \
   --delete \
   --cache-control "public, max-age=31536000, immutable" \
   --exclude "index.html" \
   --exclude "Resume_Tyler_Du.pdf" \
-  --exclude "tyler.jpg"
+  --exclude "tyler.jpg" \
+  --exclude "knowledge_base.md" \
+  --exclude "media/*" \
+  --exclude "media.json"
 
 # index.html should not be cached so browsers always get the latest shell
 aws s3 cp dist/index.html "s3://$S3_BUCKET/index.html" \
