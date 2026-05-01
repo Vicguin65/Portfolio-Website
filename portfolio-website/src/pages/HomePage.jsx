@@ -24,12 +24,11 @@ function HomePage() {
               Who is <em className="about-name">Tyler Du</em>?
             </h1>
             <p className="about-bio">
-              Hey there! I'm Tyler — a curious developer, computer science enthusiast,
-              and problem-solver graduating from RPI. From building web apps to cloud
-              infrastructure and open-source projects, I love creating things and
-              asking <strong>"what if?"</strong> Take a look around to see my journey, projects,
-              and what keeps me excited about tech. Let's connect and maybe collaborate
-              on something cool!
+              Who is Tyler Du? Well, I am a computer science graduate from RPI with a passion
+              for building things end-to-end, from web apps and cloud infrastructure to
+              open-source projects and AI-powered tools. I'm driven by the question <strong>"what if?"</strong> and
+              thrive at the intersection of software engineering and creative problem-solving.
+              Take a look around to see my journey, projects, and what keeps me excited about tech.
             </p>
             <div className="about-actions">
               <Link to="/resume"   className="btn-primary">View Resume</Link>

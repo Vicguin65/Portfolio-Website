@@ -16,7 +16,7 @@ const ProjectPage = () => {
           <span className="section-label">Portfolio</span>
           <h1 className="projects-title">What I've built</h1>
           <p className="projects-subtitle">
-            Projects spanning cloud infrastructure, web apps, automation, and AI — each one
+            Projects spanning cloud infrastructure, web apps, automation, and AI. Each one
             started with a curious "what if?"
           </p>
         </section>

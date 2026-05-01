@@ -32,7 +32,7 @@ const media = [
     publication: "Nevada Department of Education",
     date: new Date(2021, 4, 27),
     description:
-      "The Nevada Department of Education recognized 10 high school students, including Tyler Du, as National Cyber Scholars — a distinction awarded to top performers in the National Cyber Scholarship Foundation's CyberStart America program.",
+      "The Nevada Department of Education recognized 10 high school students, including Tyler Du, as National Cyber Scholars, a distinction awarded to top performers in the National Cyber Scholarship Foundation's CyberStart America program.",
     tags: ["Cybersecurity", "Award"],
     links: [
       {

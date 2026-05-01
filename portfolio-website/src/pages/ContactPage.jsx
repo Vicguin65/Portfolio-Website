@@ -46,7 +46,7 @@ const ContactPage = () => {
           <h1 className={styles.title}>Let's connect</h1>
           <p className={styles.subtitle}>
             Curious about my work, thinking about collaborating, or just want to chat?
-            I'm all ears — reach out any time.
+            I'm all ears. Reach out any time.
           </p>
         </div>
 
@@ -86,7 +86,7 @@ const ContactPage = () => {
             {submitted ? (
               <div className={styles.success}>
                 <h3 className={styles.successTitle}>Message sent!</h3>
-                <p>Thanks for reaching out — I'll get back to you soon.</p>
+                <p>Thanks for reaching out! I'll get back to you soon.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className={styles.form}>
@@ -128,7 +128,7 @@ const ContactPage = () => {
                 </div>
                 {error && (
                   <p className={styles.errorMsg}>
-                    Something went wrong — please try emailing me directly at tyleryeedu@gmail.com.
+                    Something went wrong. Please try emailing me directly at tyleryeedu@gmail.com.
                   </p>
                 )}
                 <button
