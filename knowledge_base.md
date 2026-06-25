@@ -22,6 +22,7 @@ Minneapolis, MN
 - Automated provisioning of 50+ AWS accounts daily, enabling scalable and consistent cloud infrastructure deployment
 - Developed Terraform-based infrastructure-as-code solutions to standardize deployments across AWS, GCP, and Azure, reducing configuration drift
 - Automated CI/CD pipelines to streamline deployment workflows and accelerate feature releases
+- Designed and implemented a scheduled health checker to solve configuration drift in single-tenant infrastructure: each tenant runs a weekly heartbeat that checks its own configuration against a source-of-truth API and self-corrects to match the expected state, preserving the blast-radius isolation benefits of single-tenancy while keeping all tenants in sync
 Technologies used: AWS, GCP, Azure, Cloudflare, Terraform, CI/CD
 
 ### AI Camp — Software Engineer Intern (January 2023 – December 2023)
@@ -154,6 +155,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 - Automated provisioning of **50+ AWS accounts daily** at Zero Sum Defense
 - Deployed production platform across **4 cloud providers** (AWS, GCP, Azure, Cloudflare)
+- Solved configuration drift in single-tenant infrastructure by building a **weekly self-healing health checker** deployed per tenant, backed by a source-of-truth API, at Zero Sum Defense
 - Saved **100+ hours per hiring season** via Lever API automation
 - Trained a resume classifier with **88% accuracy** on 1,700+ records
 - Educational bot deployed in **8 courses**, reaching **60+ students per course** at AI Camp

@@ -9,6 +9,7 @@ portfolio-website/build/
 # .env.example is committed as documentation; .env.local holds real values
 .env.local
 .env.*.local
+.env.production
 
 # ── Python ────────────────────────────────────────────────────────
 __pycache__/
