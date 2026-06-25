@@ -1,0 +1,48 @@
+# ── Dependencies ──────────────────────────────────────────────────
+node_modules/
+
+# ── Frontend: build output ────────────────────────────────────────
+portfolio-website/dist/
+portfolio-website/build/
+
+# ── Frontend: local environment ───────────────────────────────────
+# .env.example is committed as documentation; .env.local holds real values
+.env.local
+.env.*.local
+.env.production
+
+# ── Python ────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ── Terraform ─────────────────────────────────────────────────────
+# .terraform.lock.hcl IS committed (pins provider versions)
+.terraform/
+*.tfplan
+tfplan
+*.tfvars
+terraform.tfstate
+terraform.tfstate.backup
+infrastructure/terraform/.build/
+infrastructure/terraform/.lambda.zip
+
+# ── Assets hosted on S3, not tracked in git ───────────────────────
+portfolio-website/public/Resume_Tyler_Du.pdf
+portfolio-website/public/tyler.jpg
+
+# ── Test coverage ─────────────────────────────────────────────────
+coverage/
+
+# ── Logs ──────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# ── OS / Editor ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+*.swo

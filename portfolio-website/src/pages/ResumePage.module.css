@@ -1,0 +1,47 @@
+.main {
+  padding-bottom: 5.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding-top: 4.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  margin-top: 0.5rem;
+}
+
+.pdfWrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 1.5rem;
+}
+
+.pdfContainer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s ease;
+  transform-origin: top center;
+}
+
+.pdfContainer:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.zoomed {
+  transform: scale(1.5);
+}
