@@ -66,7 +66,9 @@ function AskTylerPage() {
       <main className={styles.main}>
         <div className="container">
           <span className="section-label">AI Assistant</span>
-          <h1 className={styles.title}>Ask Tyler</h1>
+          <h1 className={styles.title}>
+            Is Tyler the right <em className={styles.titleEm}>fit</em>?
+          </h1>
           <p className={styles.subtitle}>
             Paste a job description and get an honest evaluation of Tyler's fit,
             his most relevant work, and talking points for the interview.

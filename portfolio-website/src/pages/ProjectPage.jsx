@@ -1,8 +1,13 @@
-import React from 'react';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
-import { projects, diff_text, date_string, same_date } from '../components/projects';
-import './ProjectPage.css';
+import React from "react";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
+import {
+  projects,
+  diff_text,
+  date_string,
+  same_date,
+} from "../components/projects";
+import "./ProjectPage.css";
 
 const ProjectPage = () => {
   const sorted = [...projects].sort((a, b) => b.endDate - a.endDate);
@@ -11,13 +16,14 @@ const ProjectPage = () => {
     <div className="page-wrapper">
       <NavBar />
       <main>
-
         <section className="projects-header container">
           <span className="section-label">Portfolio</span>
-          <h1 className="projects-title">What I've built</h1>
+          <h1 className="projects-title">
+            What does Tyler <em className="projects-title-em">build</em>?
+          </h1>
           <p className="projects-subtitle">
-            Projects spanning cloud infrastructure, web apps, automation, and AI. Each one
-            started with a curious "what if?"
+            Projects spanning cloud infrastructure, web apps, automation, and
+            AI. Each one started with a curious "what if?"
           </p>
         </section>
 
@@ -32,7 +38,9 @@ const ProjectPage = () => {
                     <div className="project-dates">
                       <span>{date_string(project.startDate)}</span>
                       <span className="project-date-sep">→</span>
-                      <span>{isActive ? 'Present' : date_string(project.endDate)}</span>
+                      <span>
+                        {isActive ? "Present" : date_string(project.endDate)}
+                      </span>
                     </div>
                   </div>
 
@@ -41,7 +49,9 @@ const ProjectPage = () => {
                   <div className="project-card-footer">
                     <div className="project-tech">
                       {project.technologies.map((tech, j) => (
-                        <span key={j} className="tech-badge">{tech}</span>
+                        <span key={j} className="tech-badge">
+                          {tech}
+                        </span>
                       ))}
                     </div>
                     {project.codeLink && (
@@ -58,7 +68,7 @@ const ProjectPage = () => {
 
                   <div className="project-duration">
                     {isActive
-                      ? 'Actively maintained'
+                      ? "Actively maintained"
                       : diff_text(project.startDate, project.endDate)}
                   </div>
                 </article>
@@ -66,7 +76,6 @@ const ProjectPage = () => {
             })}
           </div>
         </section>
-
       </main>
       <Footer />
     </div>

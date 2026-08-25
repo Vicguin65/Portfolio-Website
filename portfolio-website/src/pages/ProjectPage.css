@@ -13,6 +13,11 @@
   margin-bottom: 0.75rem;
 }
 
+.projects-title-em {
+  font-style: italic;
+  color: var(--accent);
+}
+
 .projects-subtitle {
   font-size: 1.05rem;
   color: var(--text-secondary);
