@@ -17,31 +17,37 @@ Relevant coursework: Data Structures, Algorithms, Software Design and Documentat
 ## Work Experience
 
 ### Zero Sum Defense — Member of Technical Staff (July 2025 – Present)
+
 Minneapolis, MN
+
 - Engineered and deployed the Actualize platform across multi-cloud environments (AWS, GCP, Azure, Cloudflare), ensuring high availability and cross-provider compatibility
 - Automated provisioning of 50+ AWS accounts daily, enabling scalable and consistent cloud infrastructure deployment
 - Developed Terraform-based infrastructure-as-code solutions to standardize deployments across AWS, GCP, and Azure, reducing configuration drift
 - Automated CI/CD pipelines to streamline deployment workflows and accelerate feature releases
 - Designed and implemented a scheduled health checker to solve configuration drift in single-tenant infrastructure: each tenant runs a weekly heartbeat that checks its own configuration against a source-of-truth API and self-corrects to match the expected state, preserving the blast-radius isolation benefits of single-tenancy while keeping all tenants in sync
-Technologies used: AWS, GCP, Azure, Cloudflare, Terraform, CI/CD
+  Technologies used: AWS, GCP, Azure, Cloudflare, Terraform, CI/CD
 
 ### AI Camp — Software Engineer Intern (January 2023 – December 2023)
+
 Palo Alto, CA
+
 - Developed REST APIs for a PostgreSQL database that improved student grouping efficiency, impacting over 300 students
 - Led a team of 6 interns to implement NVIDIA NeMo guardrails with GPT-3.5-turbo for an educational Python/Colang bot that taught HTML
 - Bot was deployed in 8 courses, instructing 60+ students per course
-Technologies used: Python, Django, PostgreSQL, OpenAI GPT-3.5-turbo, NVIDIA NeMo, BeautifulSoup4, Selenium
+  Technologies used: Python, Django, PostgreSQL, OpenAI GPT-3.5-turbo, NVIDIA NeMo, BeautifulSoup4, Selenium
 
 ### IBM — Software Engineering Intern (January 2024 – May 2024)
+
 - Built an open-source REST API for the AWS Identity Store in collaboration with IBM's cloud team
 - [TODO: add more detail — what problem did it solve? who used it? any scale/impact metrics?]
-Technologies used: Python, AWS Lambda, AWS CloudFormation
+  Technologies used: Python, AWS Lambda, AWS CloudFormation
 
 ### [TODO: Organization/Company] — [TODO: Role] (May 2022 – August 2022)
+
 - Automated hiring workflows using Lever's API, saving over 100 hours per hiring season
 - Trained a scikit-learn resume classifier on 1,700+ candidate records, achieving 88% accuracy over its first six months in production
 - Hosted model on AWS S3
-Technologies used: Python, Scikit-Learn, AWS S3
+  Technologies used: Python, Scikit-Learn, AWS S3
 
 ---
 
@@ -84,18 +90,22 @@ GitHub: https://github.com/Vicguin65/Dandy-World-Discord-Bot
 Technologies: Python, discord.py, AWS EC2
 
 ### NeMo Guardrails Educational Bot (June 2023 – December 2023) — AI Camp
+
 Led a team of 6 interns to build an educational chatbot using NVIDIA NeMo guardrails and GPT-3.5-turbo. The bot was written in Python and Colang and taught HTML to students. Deployed across 8 courses reaching 60+ students per course.
 Technologies: Python, Colang, NVIDIA NeMo, OpenAI GPT-3.5-turbo
 
 ### School Contacts Webscrape (June 2023) — AI Camp
+
 Built for AI Camp. Automated collection of school contact information via web scraping, gathering 68,000+ faculty member records. Used BeautifulSoup4 for static pages, Selenium for dynamic pages, and the OpenAI GPT-3.5-turbo API for structured data extraction from unstructured text.
 Technologies: Python, BeautifulSoup4, Selenium, OpenAI GPT-3.5-turbo
 
 ### Grouping API for Camp Students (January 2023 – April 2023) — AI Camp
+
 Built for AI Camp. Django REST API to model and manage groups of students. Implemented a grouping algorithm that matches students by survey similarity score. Processed data for ~300 students; directly improved student grouping efficiency across AI Camp programs.
 Technologies: Python, Django, PostgreSQL
 
 ### Hiring Management System Automation (May 2022 – August 2022)
+
 Automated parts of a hiring management workflow using Lever's API, saving 100+ hours per hiring season. Trained a scikit-learn resume classifier on 1,700+ historical candidate records, achieving 88% accuracy over its first six months in production. Model was hosted on AWS S3.
 Technologies: Python, Scikit-Learn, AWS S3
 
@@ -183,10 +193,7 @@ Examples:
 
 ## Other Context for the Agent
 
-[TODO: anything else you want the agent to know that doesn't fit above]
-Examples:
-
-- Open to relocation: [yes/no/specific cities]
-- Looking for: [full-time / internship / contract]
+- Open to relocation: yes
+- Looking for: full-time
 - Ideal role type: [frontend / backend / full-stack / infrastructure / ML]
 - Industries of interest: [e.g. fintech, developer tools, healthcare tech]
