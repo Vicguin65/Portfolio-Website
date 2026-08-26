@@ -28,9 +28,16 @@ portfolio-website/              React frontend (Vite)
       MediaDetailPage.jsx + .module.css    Individual feature post at /features/:slug; supports links, images, YouTube/video embeds
       NotFoundPage.jsx/.css
 
+job-descriptions/               Drop a .md/.txt job description here to tailor a resume against it
+tailored-resumes/               Output of scripts/tailor_resume.py, one file per job description
+
+scripts/
+  tailor_resume.py              Resume tailoring CLI (Claude Opus 5, structured output)
+
 backend/                        Python FastAPI backend
   app/
     main.py                     FastAPI app + CORS middleware
+    context.py                  Shared S3 grounding fetchers (resume PDF, knowledge base, media.json)
     schemas.py                  Pydantic models (ContactRequest, ContactResponse, AskRequest, AskResponse)
     routers/
       health.py                 GET /api/health
@@ -61,6 +68,16 @@ npm install      # Install after pulling
 ```bash
 pip install -r requirements.txt
 uvicorn app.main:app --reload   # Dev server → localhost:8000
+```
+
+### Resume tailoring (repo root)
+```bash
+# 1. Drop a job description into job-descriptions/ as .md or .txt
+# 2. Tailor every job description that has no output yet
+python scripts/tailor_resume.py
+
+python scripts/tailor_resume.py --force            # re-tailor all of them
+python scripts/tailor_resume.py path/to/jd.md      # tailor one specific file
 ```
 
 ### Infrastructure (`infrastructure/terraform/`)
@@ -102,6 +119,8 @@ cd infrastructure/terraform && terraform apply
 **Contact form** — POSTs to `${VITE_API_URL}/api/contact`. For local dev, set `VITE_API_URL=http://localhost:8000` in `.env.local`. CORS is configured in FastAPI middleware only (not API Gateway).
 
 **Ask Tyler (AI agent)** — POSTs to `${VITE_API_URL}/api/ask` with `{ job_description }`. Backend fetches two files from S3 at request time: the resume PDF (`Resume_Tyler_Du.pdf`, extracted via pypdf) and a markdown knowledge base (`knowledge_base.md`). Both are injected into the system prompt, then `claude-sonnet-4-6` (max 1024 tokens) evaluates fit. Returns `{ response }`. Frontend renders with `react-markdown` and a typewriter animation (word-by-word at ~35ms/word). Errors are raised as `HTTPException` so CORS headers are always present. API key stored as Lambda env var `ANTHROPIC_API_KEY` (set via `terraform.tfvars`).
+
+**Resume tailoring (CLI)** — Drop a job description as `.md` or `.txt` into `job-descriptions/`, then run `python scripts/tailor_resume.py`. It tailors every job description that has no matching file in `tailored-resumes/` (`--force` re-runs all; pass a path to do one). Grounding comes from the local `knowledge_base.md` plus the resume PDF fetched from S3, and the model is instructed never to claim anything the sources do not support. Output per job description: a tailored resume in Markdown, tailoring notes explaining what was emphasized or cut, and a **Knowledge Base Gaps** section listing every requirement the knowledge base cannot back up, phrased as specific questions. Answering those in `knowledge_base.md` (then `aws s3 cp`-ing it up) improves both this tool and the Ask Tyler agent. Uses `claude-opus-5` with adaptive thinking and structured output (`messages.stream(output_format=...)`), so it needs `anthropic>=1.0.0`. The API key comes from `ANTHROPIC_API_KEY`, falling back to `anthropic_api_key` in `infrastructure/terraform/terraform.tfvars`. This runs locally only, deliberately: a full tailoring pass takes well over the Lambda/API Gateway 30s ceiling.
 
 **Knowledge base** — `knowledge_base.md` at repo root is the single source of truth for Tyler's full professional history (education, work experience, projects with rich detail, skills with context, accomplishments with metrics). It is NOT built into the Lambda — it lives in S3 and is fetched at runtime, so updates take effect immediately with just an S3 upload. To update: `aws s3 cp knowledge_base.md s3://whoistylerdu.com/knowledge_base.md --region us-west-1`. The file is tracked in git (it contains no secrets) and excluded from the frontend `--delete` sync.
 

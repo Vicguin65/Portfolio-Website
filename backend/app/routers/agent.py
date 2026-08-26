@@ -1,23 +1,15 @@
-import json
 import logging
 import os
-from io import BytesIO
 
 import anthropic
-import boto3
 from fastapi import APIRouter, HTTPException
-from pypdf import PdfReader
 
+from app.context import fetch_knowledge_base, fetch_media_section, fetch_resume_text
 from app.schemas import AskRequest, AskResponse
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-RESUME_BUCKET = "whoistylerdu.com"
-RESUME_KEY = "Resume_Tyler_Du.pdf"
-KNOWLEDGE_BASE_KEY = "knowledge_base.md"
-MEDIA_KEY = "media.json"
 
 SYSTEM_PROMPT_TEMPLATE = """\
 You are an assistant that evaluates how well Tyler Du — a software engineer and RPI CS graduate — fits a given job description. Use his resume, knowledge base, and press features as your primary sources.
@@ -49,47 +41,22 @@ Be concise, specific, and honest.\
 """
 
 
-def _fetch_s3_text(key: str) -> str:
-    s3 = boto3.client("s3", region_name="us-west-1")
-    obj = s3.get_object(Bucket=RESUME_BUCKET, Key=key)
-    return obj["Body"].read().decode("utf-8")
-
-
-def _fetch_media_section() -> str:
-    raw = _fetch_s3_text(MEDIA_KEY)
-    entries = json.loads(raw)
-    lines = []
-    for e in entries:
-        lines.append(f"- {e['title']} ({e['publication']}, {e['date']})")
-        lines.append(f"  {e['description']}")
-        for link in e.get('links', []):
-            lines.append(f"  {link['label']}: {link['url']}")
-    return "\n".join(lines)
-
-
-def _fetch_resume_text() -> str:
-    s3 = boto3.client("s3", region_name="us-west-1")
-    obj = s3.get_object(Bucket=RESUME_BUCKET, Key=RESUME_KEY)
-    reader = PdfReader(BytesIO(obj["Body"].read()))
-    return "\n".join(page.extract_text() or "" for page in reader.pages)
-
-
 @router.post("/ask", response_model=AskResponse)
 async def ask_tyler(request: AskRequest):
     try:
-        resume_text = _fetch_resume_text()
+        resume_text = fetch_resume_text()
     except Exception:
         logger.warning("Could not fetch resume PDF from S3")
         resume_text = "(resume unavailable)"
 
     try:
-        knowledge_base = _fetch_s3_text(KNOWLEDGE_BASE_KEY)
+        knowledge_base = fetch_knowledge_base()
     except Exception:
         logger.warning("Could not fetch knowledge base from S3")
         knowledge_base = "(knowledge base unavailable)"
 
     try:
-        media_section = _fetch_media_section()
+        media_section = fetch_media_section()
     except Exception:
         logger.warning("Could not fetch media.json from S3")
         media_section = "(press features unavailable)"
