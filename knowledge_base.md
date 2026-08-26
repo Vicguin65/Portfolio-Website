@@ -39,6 +39,8 @@ Palo Alto, CA
 
 ### IBM — Software Engineering Intern (January 2024 – May 2024)
 
+Troy, NY
+
 - Built an open-source REST API for the AWS Identity Store in collaboration with IBM's cloud team
 - [TODO: add more detail — what problem did it solve? who used it? any scale/impact metrics?]
   Technologies used: Python, AWS Lambda, AWS CloudFormation

@@ -1,6 +1,7 @@
 """Render a structured resume to PDF in the same layout as Du_Tyler_Resume.pdf.
 
-Layout measured from the reference PDF: US Letter, 0.5in margins, Times New Roman
+Layout measured from the reference PDF: US Letter, 0.5in margins (0.25in at the
+bottom, to fit more content on the single page), Times New Roman
 throughout, 10pt body on 13.2pt leading, 12pt all-caps section headings, a 16pt
 centered name, and Arial bullet glyphs hanging at 18pt with text indented to 36pt.
 
@@ -30,6 +31,7 @@ from reportlab.platypus import (
 )
 
 MARGIN = 36
+BOTTOM_MARGIN = 18  # Tighter than the other three, to buy a line of content.
 BODY_SIZE = 10
 LEADING = 13.2
 CONTENT_WIDTH = letter[0] - 2 * MARGIN
@@ -165,7 +167,7 @@ def build_story(resume) -> list:
     return story
 
 
-PAGE_HEIGHT = letter[1] - 2 * MARGIN
+PAGE_HEIGHT = letter[1] - MARGIN - BOTTOM_MARGIN
 
 
 def _flatten(story):
@@ -198,12 +200,12 @@ def write_pdf(resume, path, title="Tyler Du Resume") -> None:
         leftMargin=MARGIN,
         rightMargin=MARGIN,
         topMargin=MARGIN,
-        bottomMargin=MARGIN,
+        bottomMargin=BOTTOM_MARGIN,
         title=title,
         author=resume.header.name,
     )
     frame = Frame(
-        MARGIN, MARGIN, CONTENT_WIDTH, letter[1] - 2 * MARGIN,
+        MARGIN, BOTTOM_MARGIN, CONTENT_WIDTH, PAGE_HEIGHT,
         leftPadding=0, rightPadding=0, topPadding=0, bottomPadding=0,
     )
     doc.addPageTemplates([PageTemplate(id="resume", frames=[frame])])

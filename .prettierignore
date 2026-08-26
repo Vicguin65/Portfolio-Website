@@ -1,0 +1,5 @@
+# Resume Markdown is parsed back into a PDF by scripts/render_resume.py, which
+# expects *Role | Dates* subtitles. Prettier rewrites `*em*` to `_em_` (not
+# configurable) and escapes bare `*`, which silently breaks the PDF layout.
+tailored-resumes/
+job-descriptions/
