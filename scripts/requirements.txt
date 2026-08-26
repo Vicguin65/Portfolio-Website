@@ -1,0 +1,6 @@
+# Local tooling only. The Lambda does not install these; see backend/requirements.txt.
+anthropic==1.0.0
+boto3>=1.34
+pydantic>=2.9
+pypdf>=5.1
+reportlab>=4.2
