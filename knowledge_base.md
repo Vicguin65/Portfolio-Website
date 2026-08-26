@@ -25,7 +25,8 @@ Minneapolis, MN
 - Developed Terraform-based infrastructure-as-code solutions to standardize deployments across AWS, GCP, and Azure, reducing configuration drift
 - Automated CI/CD pipelines to streamline deployment workflows and accelerate feature releases
 - Designed and implemented a scheduled health checker to solve configuration drift in single-tenant infrastructure: each tenant runs a weekly heartbeat that checks its own configuration against a source-of-truth API and self-corrects to match the expected state, preserving the blast-radius isolation benefits of single-tenancy while keeping all tenants in sync
-  Technologies used: AWS, GCP, Azure, Cloudflare, Terraform, CI/CD
+- Use Claude Code daily as a core part of the development workflow, applying agentic AI coding to infrastructure automation, platform engineering, and feature delivery
+  Technologies used: AWS, GCP, Azure, Cloudflare, Terraform, CI/CD, Claude Code
 
 ### AI Camp — Software Engineer Intern (January 2023 – December 2023)
 
@@ -150,6 +151,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 - **scikit-learn** — Built and deployed a resume classifier with 88% accuracy trained on 1,700+ records.
 - **NVIDIA NeMo** — Used at AI Camp to implement guardrails for an educational LLM bot in production (8 courses, 60+ students each).
 - **Anthropic Claude API** — Integrated into portfolio agent; familiar with prompt engineering, system prompts, context management.
+- **Claude Code (agentic coding)** — Daily driver at Zero Sum Defense. Used every day as part of the standard development workflow for infrastructure automation, platform engineering, and feature work, alongside personal projects such as this portfolio site and its resume-tailoring CLI.
 - **OpenAI API** — Used GPT-3.5-turbo for structured data extraction and as the backbone of an educational bot at AI Camp.
 - [TODO: any PyTorch, TensorFlow, Hugging Face experience?]
 
