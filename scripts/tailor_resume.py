@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Literal
 
 import anthropic
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "backend"))
@@ -47,9 +47,8 @@ class KnowledgeGap(BaseModel):
 
 
 class ResumeHeader(BaseModel):
-    name: str = Field(min_length=1, description="Tyler's full name, exactly as it appears on the current resume.")
+    name: str = Field(description="Tyler's full name, exactly as it appears on the current resume. Never empty.")
     contact_lines: list[str] = Field(
-        min_length=1,
         description="The contact lines under the name, copied from the current resume. Normally two: location/email/site, then the profile links.",
     )
 
@@ -89,11 +88,9 @@ class TailoredResume(BaseModel):
     match_reasoning: str = Field(description="Two or three sentences of honest reasoning about the fit, gaps included.")
     header: ResumeHeader
     sections: list[ResumeSection] = Field(
-        min_length=2,
         description="The complete resume body, in the order it should appear. Most relevant section for this role first. Always populate this fully, however weak the match is.",
     )
     tailoring_notes: list[str] = Field(
-        min_length=1,
         description="What was emphasized, reordered, or cut for this role, and why. One line each.",
     )
     knowledge_gaps: list[KnowledgeGap] = Field(
@@ -186,9 +183,18 @@ class TailoringError(RuntimeError):
 
 
 def _check(resume: TailoredResume) -> TailoredResume:
-    """The model occasionally returns an empty body. Catch that before it reaches a PDF."""
+    """The model occasionally returns an empty body. Catch that before it reaches a PDF.
+
+    These are deliberately checked here rather than as pydantic constraints on the model:
+    the SDK validates the parsed response inside the stream, so a constraint violation
+    would raise there and escape the retry loop below.
+    """
     if not resume.header.name.strip():
         raise TailoringError("model returned an empty name")
+    if not resume.header.contact_lines:
+        raise TailoringError("model returned no contact lines")
+    if len(resume.sections) < 2:
+        raise TailoringError(f"model returned only {len(resume.sections)} section(s)")
     body = sum(len(s.entries) + len(s.lines) for s in resume.sections)
     if body < 3:
         raise TailoringError(f"model returned an almost empty resume ({body} entries across {len(resume.sections)} sections)")
@@ -215,16 +221,22 @@ def tailor(client: anthropic.Anthropic, jd_text: str, resume_text: str, knowledg
     best_over = None
 
     for attempt in range(MAX_ATTEMPTS):
-        with client.messages.stream(
-            model=MODEL,
-            max_tokens=32000,
-            system=system,
-            thinking={"type": "adaptive"},
-            output_config={"effort": "high"},
-            output_format=TailoredResume,
-            messages=[{"role": "user", "content": prompt}],
-        ) as stream:
-            message = stream.get_final_message()
+        try:
+            with client.messages.stream(
+                model=MODEL,
+                max_tokens=32000,
+                system=system,
+                thinking={"type": "adaptive"},
+                output_config={"effort": "high"},
+                output_format=TailoredResume,
+                messages=[{"role": "user", "content": prompt}],
+            ) as stream:
+                message = stream.get_final_message()
+        except ValidationError as exc:
+            last_error = TailoringError(f"model returned a response that did not fit the schema ({exc.error_count()} error(s))")
+            print(f"  {last_error}. Retrying.")
+            prompt = base_prompt
+            continue
 
         if message.stop_reason == "max_tokens":
             raise TailoringError("response hit max_tokens before finishing; raise max_tokens and retry")
