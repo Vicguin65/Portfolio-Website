@@ -1,5 +1,12 @@
-# Resume Markdown is parsed back into a PDF by scripts/render_resume.py, which
-# expects *Role | Dates* subtitles. Prettier rewrites `*em*` to `_em_` (not
-# configurable) and escapes bare `*`, which silently breaks the PDF layout.
-tailored-resumes/
-job-descriptions/
+# Keep this file at the repo root. Prettier does not discover .prettierignore
+# hierarchically the way it discovers config files: it reads exactly one, from the
+# working directory (or --ignore-path / the editor's prettier.ignorePath). A copy
+# inside tailored-resumes-feature/ is silently ignored, and the resumes get mangled.
+#
+# Resume Markdown is parsed back into a PDF by
+# tailored-resumes-feature/scripts/render_resume.py, which expects *Role | Dates*
+# subtitles. Prettier rewrites `*em*` to `_em_` (not configurable) and escapes bare
+# `*`, so formatting these files breaks the PDF layout without any error. Job
+# descriptions are model input and should reach the prompt exactly as pasted.
+tailored-resumes-feature/tailored-resumes/
+tailored-resumes-feature/job-descriptions/
