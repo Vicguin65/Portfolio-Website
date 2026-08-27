@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Rebuild a resume PDF from an edited Markdown file.
 
-Edit the resume section of a file in tailored-resumes/, then run this to
-regenerate the matching Du_Tyler_Resume_<Company>.pdf. Only the resume itself is
-read; the tailoring notes and knowledge base gaps below it are ignored.
+Edit a resume in tailored-resumes/, then run this to regenerate its
+Du_Tyler_Resume_<Company>.pdf. Only the resume body is read; the tailoring notes
+and knowledge base gaps below it are ignored.
 
-    python scripts/render_resume.py                              # every .md in tailored-resumes/
-    python scripts/render_resume.py tailored-resumes/openai.md   # just this one
-    python scripts/render_resume.py openai.md -o /tmp/out.pdf    # to a specific path
+Run from the repo root (a bare filename resolves inside tailored-resumes/):
+
+    python tailored-resumes-feature/scripts/render_resume.py
+    python tailored-resumes-feature/scripts/render_resume.py salesforce.md
+    python tailored-resumes-feature/scripts/render_resume.py salesforce.md -o /tmp/out.pdf
 """
 
 import argparse
@@ -16,7 +18,6 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from resume_pdf import overflow_lines, write_pdf  # noqa: E402

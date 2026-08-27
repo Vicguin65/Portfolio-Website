@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Tailor Tyler's resume to a job description using Claude.
 
-Drop a job description into job-descriptions/ and run this script. For each
-job description it writes a tailored resume as both Markdown and a PDF that
-matches the formatting of the standing resume, plus any requirement the
-knowledge base cannot support with real evidence.
+Drop a job description into job-descriptions/ and run this script. For each one it
+writes a tailored resume to tailored-resumes/ as both Markdown and a PDF matching
+the standing resume, plus any requirement the knowledge base cannot support.
+
+Run from the repo root:
+
+    python tailored-resumes-feature/scripts/tailor_resume.py
+    python tailored-resumes-feature/scripts/tailor_resume.py --force
+    python tailored-resumes-feature/scripts/tailor_resume.py path/to/jd.md
 """
 
 import argparse
@@ -17,15 +22,16 @@ from typing import Literal
 import anthropic
 from pydantic import BaseModel, Field, ValidationError
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
+FEATURE_ROOT = Path(__file__).resolve().parent.parent
+REPO_ROOT = FEATURE_ROOT.parent
 sys.path.insert(0, str(REPO_ROOT / "backend"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from app.context import fetch_resume_text  # noqa: E402
 from resume_pdf import overflow_lines, write_pdf  # noqa: E402
 
-JD_DIR = REPO_ROOT / "job-descriptions"
-OUT_DIR = REPO_ROOT / "tailored-resumes"
+JD_DIR = FEATURE_ROOT / "job-descriptions"
+OUT_DIR = FEATURE_ROOT / "tailored-resumes"
 KNOWLEDGE_BASE = REPO_ROOT / "knowledge_base.md"
 TFVARS = REPO_ROOT / "infrastructure" / "terraform" / "terraform.tfvars"
 

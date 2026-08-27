@@ -28,13 +28,14 @@ portfolio-website/              React frontend (Vite)
       MediaDetailPage.jsx + .module.css    Individual feature post at /features/:slug; supports links, images, YouTube/video embeds
       NotFoundPage.jsx/.css
 
-job-descriptions/               Drop a .md/.txt job description here to tailor a resume against it
-tailored-resumes/               Output of scripts/tailor_resume.py, one file per job description
-
-scripts/
-  tailor_resume.py              Resume tailoring CLI (Claude Opus 5, structured output)
-  render_resume.py              Rebuilds a PDF from a hand-edited tailored-resumes/*.md
-  resume_pdf.py                 Renders a tailored resume to PDF matching Du_Tyler_Resume.pdf
+tailored-resumes-feature/       Self-contained resume tailoring tool (see its README.md)
+  job-descriptions/             Drop a .md/.txt job description here to tailor against
+  tailored-resumes/             Output: <jd-name>.md and Du_Tyler_Resume_<Company>.pdf
+  requirements.txt              Local tooling deps; NOT installed into the Lambda
+  scripts/
+    tailor_resume.py            Resume tailoring CLI (Claude Opus 5, structured output)
+    render_resume.py            Rebuilds a PDF from a hand-edited tailored-resumes/*.md
+    resume_pdf.py               Renders a tailored resume to PDF matching Du_Tyler_Resume.pdf
 
 backend/                        Python FastAPI backend
   app/
@@ -72,19 +73,21 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload   # Dev server → localhost:8000
 ```
 
-### Resume tailoring (repo root)
+### Resume tailoring (`tailored-resumes-feature/`, run from repo root)
 ```bash
-# 1. Drop a job description into job-descriptions/ as .md or .txt
-# 2. Tailor every job description that has no output yet
-python scripts/tailor_resume.py
+pip install -r tailored-resumes-feature/requirements.txt
 
-python scripts/tailor_resume.py --force            # re-tailor all of them
-python scripts/tailor_resume.py path/to/jd.md      # tailor one specific file
+# 1. Drop a job description into tailored-resumes-feature/job-descriptions/ as .md or .txt
+# 2. Tailor every job description that has no output yet
+T=tailored-resumes-feature/scripts
+python $T/tailor_resume.py                 # only new job descriptions
+python $T/tailor_resume.py --force         # re-tailor all of them
+python $T/tailor_resume.py path/to/jd.md   # one specific file
 
 # 3. Optionally hand-edit tailored-resumes/<jd-name>.md, then rebuild its PDF
-python scripts/render_resume.py                            # every .md in tailored-resumes/
-python scripts/render_resume.py tailored-resumes/foo.md    # just this one
-python scripts/render_resume.py foo.md -o /tmp/out.pdf     # to a specific path
+python $T/render_resume.py                       # every .md
+python $T/render_resume.py salesforce.md         # one (bare name resolves in tailored-resumes/)
+python $T/render_resume.py salesforce.md -o /tmp/out.pdf
 ```
 
 ### Infrastructure (`infrastructure/terraform/`)
@@ -127,11 +130,11 @@ cd infrastructure/terraform && terraform apply
 
 **Ask Tyler (AI agent)** — POSTs to `${VITE_API_URL}/api/ask` with `{ job_description }`. Backend fetches two files from S3 at request time: the resume PDF (`Resume_Tyler_Du.pdf`, extracted via pypdf) and a markdown knowledge base (`knowledge_base.md`). Both are injected into the system prompt, then `claude-sonnet-4-6` (max 1024 tokens) evaluates fit. Returns `{ response }`. Frontend renders with `react-markdown` and a typewriter animation (word-by-word at ~35ms/word). Errors are raised as `HTTPException` so CORS headers are always present. API key stored as Lambda env var `ANTHROPIC_API_KEY` (set via `terraform.tfvars`).
 
-**Resume tailoring (CLI)** — Drop a job description as `.md` or `.txt` into `job-descriptions/`, then run `python scripts/tailor_resume.py`. It tailors every job description that has no matching file in `tailored-resumes/` (`--force` re-runs all; pass a path to do one). Grounding comes from the local `knowledge_base.md` plus the resume PDF fetched from S3, and the model is instructed never to claim anything the sources do not support. Output per job description is two files: `<jd-name>.md` (the resume plus tailoring notes and gaps) and `Du_Tyler_Resume_<Company>.pdf` (the resume alone, formatted to match the standing resume). The Markdown ends with a **Knowledge Base Gaps** section listing every requirement the knowledge base cannot back up, phrased as specific questions. Answering those in `knowledge_base.md` (then `aws s3 cp`-ing it up) improves both this tool and the Ask Tyler agent. Uses `claude-opus-5` with adaptive thinking and structured output (`messages.stream(output_format=...)`), so it needs `anthropic>=1.0.0`. The API key comes from `ANTHROPIC_API_KEY`, falling back to `anthropic_api_key` in `infrastructure/terraform/terraform.tfvars`. This runs locally only, deliberately: a full tailoring pass takes well over the Lambda/API Gateway 30s ceiling.
+**Resume tailoring (CLI)** — The whole feature is self-contained under `tailored-resumes-feature/`, which has its own `README.md` covering usage; the notes below cover the internals. Nothing here is deployed: it is local tooling, and its `requirements.txt` is separate from the Lambda's. Drop a job description as `.md` or `.txt` into `job-descriptions/`, then run `python tailored-resumes-feature/scripts/tailor_resume.py`. It tailors every job description that has no matching file in `tailored-resumes/` (`--force` re-runs all; pass a path to do one). Grounding comes from the local `knowledge_base.md` plus the resume PDF fetched from S3, and the model is instructed never to claim anything the sources do not support. Output per job description is two files: `<jd-name>.md` (the resume plus tailoring notes and gaps) and `Du_Tyler_Resume_<Company>.pdf` (the resume alone, formatted to match the standing resume). The Markdown ends with a **Knowledge Base Gaps** section listing every requirement the knowledge base cannot back up, phrased as specific questions. Answering those in `knowledge_base.md` (then `aws s3 cp`-ing it up) improves both this tool and the Ask Tyler agent. Uses `claude-opus-5` with adaptive thinking and structured output (`messages.stream(output_format=...)`), so it needs `anthropic>=1.0.0`. The API key comes from `ANTHROPIC_API_KEY`, falling back to `anthropic_api_key` in `infrastructure/terraform/terraform.tfvars`. This runs locally only, deliberately: a full tailoring pass takes well over the Lambda/API Gateway 30s ceiling.
 
-**Resume PDF rendering** — The model returns the resume as *structured* data (`ResumeHeader` / `ResumeSection` / `ResumeEntry`), not prose, so the Markdown and the PDF render from one source. `scripts/resume_pdf.py` renders it with reportlab to match `Du_Tyler_Resume.pdf` exactly: US Letter, 0.5in margins with a 0.25in bottom margin (`BOTTOM_MARGIN`, deliberately tighter than the reference to fit roughly one more line), Times New Roman 10pt body on 13.2pt leading, 12pt all-caps headings, 16pt centered name, Arial bullets hanging at 18pt with text at 36pt, and locations/dates right-aligned to 576pt. Each section heading carries a grey rule (`SectionHeading`, a `Paragraph` subclass): 0.75pt, colour 0.5333 grey, spanning x 39 to 573, drawn 5.4pt below the heading baseline. It is painted below the flowable's own box, inside the trailing space, so it adds no height and `overflow_lines()` stays accurate. Real Times New Roman and Arial are loaded from `C:/Windows/Fonts` when present, falling back to the metric-compatible base-14 Times and Helvetica. `**bold**` markers in bullet text become bold runs. `overflow_lines()` measures the built story against one page; `tailor()` uses it to re-ask the model for a shorter draft (up to 3 attempts) so output stays one page like the original.
+**Resume PDF rendering** — The model returns the resume as *structured* data (`ResumeHeader` / `ResumeSection` / `ResumeEntry`), not prose, so the Markdown and the PDF render from one source. `tailored-resumes-feature/scripts/resume_pdf.py` renders it with reportlab to match `Du_Tyler_Resume.pdf` exactly: US Letter, 0.5in margins with a 0.25in bottom margin (`BOTTOM_MARGIN`, deliberately tighter than the reference to fit roughly one more line), Times New Roman 10pt body on 13.2pt leading, 12pt all-caps headings, 16pt centered name, Arial bullets hanging at 18pt with text at 36pt, and locations/dates right-aligned to 576pt. Each section heading carries a grey rule (`SectionHeading`, a `Paragraph` subclass): 0.75pt, colour 0.5333 grey, spanning x 39 to 573, drawn 5.4pt below the heading baseline. It is painted below the flowable's own box, inside the trailing space, so it adds no height and `overflow_lines()` stays accurate. Real Times New Roman and Arial are loaded from `C:/Windows/Fonts` when present, falling back to the metric-compatible base-14 Times and Helvetica. `**bold**` markers in bullet text become bold runs. `overflow_lines()` measures the built story against one page; `tailor()` uses it to re-ask the model for a shorter draft (up to 3 attempts) so output stays one page like the original.
 
-**Hand-editing a tailored resume** — The Markdown in `tailored-resumes/` is the editable surface. Edit the resume body (everything between the first `---` and the `## Tailoring Notes` heading), then run `python scripts/render_resume.py <file>.md` to rebuild the PDF from it. `scripts/render_resume.py` parses that body back into the same `ResumeHeader`/`ResumeSection`/`ResumeEntry` objects the model produces, so an unedited file re-renders to a byte-identical layout. Notes and knowledge base gaps below the resume are ignored. The format it reads back: `## Name` then contact lines, `### SECTION HEADING`, `**Employer** | Location`, `*Role | Dates*`, `- bullet`, and full-width lines (like `**Languages:** ...`) for list-style sections; `**bold**` inside bullets becomes bold runs. The output filename comes from the `<!-- company: X -->` comment at the top, falling back to the `# Role at Company` title. It warns, rather than silently overflowing, if an edit pushes the resume past one page.
+**Hand-editing a tailored resume** — The Markdown in `tailored-resumes/` is the editable surface. Edit the resume body (everything between the first `---` and the `## Tailoring Notes` heading), then run `python tailored-resumes-feature/scripts/render_resume.py <file>.md` to rebuild the PDF from it. A bare filename resolves inside `tailored-resumes/`. It parses that body back into the same `ResumeHeader`/`ResumeSection`/`ResumeEntry` objects the model produces, so an unedited file re-renders to a byte-identical layout. Notes and knowledge base gaps below the resume are ignored. The format it reads back: `## Name` then contact lines, `### SECTION HEADING`, `**Employer** | Location`, `*Role | Dates*`, `- bullet`, and full-width lines (like `**Languages:** ...`) for list-style sections; `**bold**` inside bullets becomes bold runs. The output filename comes from the `<!-- company: X -->` comment at the top, falling back to the `# Role at Company` title. It warns, rather than silently overflowing, if an edit pushes the resume past one page.
 
 **Knowledge base** — `knowledge_base.md` at repo root is the single source of truth for Tyler's full professional history (education, work experience, projects with rich detail, skills with context, accomplishments with metrics). It is NOT built into the Lambda — it lives in S3 and is fetched at runtime, so updates take effect immediately with just an S3 upload. To update: `aws s3 cp knowledge_base.md s3://whoistylerdu.com/knowledge_base.md --region us-west-1`. The file is tracked in git (it contains no secrets) and excluded from the frontend `--delete` sync.
 
