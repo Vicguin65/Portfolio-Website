@@ -29,7 +29,8 @@ infrastructure/terraform/.build/
 infrastructure/terraform/.lambda.zip
 
 # ── Assets hosted on S3, not tracked in git ───────────────────────
-portfolio-website/public/Resume_Tyler_Du.pdf
+# Resume lives only in s3://whoistylerdu.com/ - never commit a local copy
+Resume_Tyler_Du.pdf
 portfolio-website/public/tyler.jpg
 
 # ── Test coverage ─────────────────────────────────────────────────
