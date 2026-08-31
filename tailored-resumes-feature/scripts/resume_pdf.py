@@ -9,6 +9,7 @@ Real Times New Roman and Arial are used when the system has them; otherwise this
 falls back to the base-14 Times and Helvetica, which are metric-compatible.
 """
 
+import io
 import re
 from pathlib import Path
 from xml.sax.saxutils import escape
@@ -180,20 +181,48 @@ def _flatten(story):
 
 
 def overflow_lines(resume) -> int:
-    """How many body lines too long the resume is for a single page. 0 means it fits."""
-    total = 0
-    for i, flowable in enumerate(_flatten(build_story(resume))):
-        if i:
-            total += max(flowable.getSpaceBefore(), 0)
-        total += flowable.wrap(CONTENT_WIDTH, PAGE_HEIGHT)[1]
-        total += max(flowable.getSpaceAfter(), 0)
+    """How many body lines too long the resume is for a single page. 0 means it fits.
 
-    excess = total - PAGE_HEIGHT
-    return -(-int(excess) // int(LEADING)) if excess > 0 else 0
+    Packs the story the way the frame does. Each entry is wrapped in a KeepTogether, so
+    a block that does not fit in the space left on the page moves to the next one whole
+    and the remainder of the page is wasted. Summing flowable heights alone misses that
+    waste, which is enough to call a resume that renders on two pages a fit.
+    """
+    used = 0.0  # height consumed on the page currently being filled
+    pages = 1
+    first = True
+
+    for flowable in build_story(resume):
+        leaves = list(_flatten([flowable]))
+        height = 0.0
+        for leaf in leaves:
+            if not first:
+                height += max(leaf.getSpaceBefore(), 0)
+            height += leaf.wrap(CONTENT_WIDTH, PAGE_HEIGHT)[1]
+            height += max(leaf.getSpaceAfter(), 0)
+            first = False
+
+        # An atomic block that no longer fits starts the next page instead of splitting.
+        if isinstance(flowable, KeepTogether) and used and height <= PAGE_HEIGHT < used + height:
+            pages += 1
+            used = height
+            continue
+
+        used += height
+        while used > PAGE_HEIGHT:
+            pages += 1
+            used -= PAGE_HEIGHT
+
+    if page_count(resume) <= 1:
+        return 0
+
+    # It does not fit; the packing estimate only has to size the overshoot.
+    excess = (pages - 1) * PAGE_HEIGHT + used - PAGE_HEIGHT
+    return max(1, -(-int(excess) // int(LEADING)))
 
 
-def write_pdf(resume, path, title="Tyler Du Resume") -> None:
-    """`path` may be a filesystem path or a writable binary buffer."""
+def _build(resume, path, title="Tyler Du Resume") -> BaseDocTemplate:
+    """Render the resume and return the built document, whose `page` is the page count."""
     doc = BaseDocTemplate(
         str(path) if isinstance(path, (str, Path)) else path,
         pagesize=letter,
@@ -210,3 +239,14 @@ def write_pdf(resume, path, title="Tyler Du Resume") -> None:
     )
     doc.addPageTemplates([PageTemplate(id="resume", frames=[frame])])
     doc.build(build_story(resume))
+    return doc
+
+
+def write_pdf(resume, path, title="Tyler Du Resume") -> None:
+    """`path` may be a filesystem path or a writable binary buffer."""
+    _build(resume, path, title)
+
+
+def page_count(resume) -> int:
+    """Pages the resume actually renders to, measured by building it."""
+    return _build(resume, io.BytesIO()).page

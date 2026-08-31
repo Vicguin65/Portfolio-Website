@@ -4,7 +4,7 @@
 
 The base resume, and the source of truth for `Resume_Tyler_Du.pdf`. Edit the body below, then rebuild the PDF:
 
-    python tailored-resumes-feature/scripts/render_resume.py tailored-resumes-feature/base-resume.md -o Resume_Tyler_Du.pdf
+    python tailored-resumes-feature/scripts/render_resume.py base-resume.md -o Resume_Tyler_Du.pdf
     aws s3 cp Resume_Tyler_Du.pdf s3://whoistylerdu.com/Resume_Tyler_Du.pdf --cache-control "max-age=86400" --region us-west-1
 
 ---
