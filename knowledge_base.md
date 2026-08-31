@@ -133,7 +133,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 - **Python** — Most proficient language. Used professionally (IBM, hiring automation) and across 5+ personal projects. Comfortable with async, OOP, scripting, and ML workflows.
 - **JavaScript / TypeScript** — Used in all frontend projects. Comfortable with modern ES6+, React hooks, async/await.
-- **Rust** — Production use at Zero Sum Defense on the Actualize desktop client, whose native backend is written entirely in Rust behind a Tauri shell. Worked across the client and owned its native binary packaging and build configuration.
+- **Rust** — Production use at Zero Sum Defense on the Actualize desktop client, whose native backend is written entirely in Rust behind a Tauri shell. Worked across the client and owned its native binary packaging and build configuration. Rust was new professionally at the start of this work; reached shipping production code in it within months, using agentic tooling and code review to close the gap.
 - **HCL / Terraform** — Primary language for infrastructure work at Zero Sum Defense and across personal projects.
 - **Java, C, C++** — [TODO: coursework only, or used on a real project? Add context so tailored resumes can back these up.]
 - **SQL** — [TODO: what level? Used through the Django ORM only, or hand-written queries too?]
@@ -169,7 +169,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 - **scikit-learn** — Built and deployed a resume classifier with 88% accuracy trained on 1,700+ records.
 - **NVIDIA NeMo** — Used at AI Camp to implement guardrails for an educational LLM bot in production (8 courses, 60+ students each).
 - **Anthropic Claude API** — Integrated into portfolio agent; familiar with prompt engineering, system prompts, context management.
-- **Claude Code (agentic coding)** — Daily driver at Zero Sum Defense across infrastructure automation, platform engineering, and feature work, alongside personal projects such as this portfolio site and its resume-tailoring CLI. Used it to ship production Rust on the Actualize desktop client: scoping each change, directing the agent through the Tauri and native-binary toolchain, and reviewing generated code before it shipped rather than accepting output wholesale. Also used it to build the client’s browser-automation payment flow, iterating against a real multi-step checkout until the flow handled its verification steps reliably.
+- **Claude Code (agentic coding)** — Daily driver at Zero Sum Defense across infrastructure automation, platform engineering, and feature work, alongside personal projects such as this portfolio site and its resume-tailoring CLI. Used it to get productive quickly in Rust, which was new professionally, shipping production code on the Actualize desktop client: scoping each change, directing the agent through the Tauri and native-binary toolchain, and reviewing generated code before it shipped rather than accepting output wholesale. Also used it to build the client’s browser-automation payment flow, iterating against a real multi-step checkout until the flow handled its verification steps reliably.
 - **OpenAI API** — Used GPT-3.5-turbo for structured data extraction and as the backbone of an educational bot at AI Camp.
 - [TODO: any PyTorch, TensorFlow, Hugging Face experience?]
 
