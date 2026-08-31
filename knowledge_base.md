@@ -218,13 +218,27 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 ## Soft Skills & Working Style
 
-[TODO: fill this in — it helps the agent give better interview talking points]
-Examples:
+Interview talking points and grounding for the agent. Not resume content: do not surface these as resume bullets.
 
-- Comfortable working independently or in small teams
-- Experience collaborating with cross-functional teams (IBM cloud team)
-- Fast learner — built functional Discord bot in 3 days
-- [TODO: how do you approach debugging? documentation? code review?]
+### Debugging
+
+Reproduce on the environment where it actually fails rather than on the development machine, then narrow to the layer that differs between the two.
+
+A representative case, from the Actualize desktop client: hardware-token authentication worked on development machines and failed on clean installs. The cause was not application logic but the native binary layer beneath it, where the correct build differs by operating system and by CPU architecture, and the supporting library happened to be present on developer machines only because a toolchain had installed it. Fixing the immediate failure was not enough, since the same class of bug returns with every new target, so the fix was a build pipeline that compiles and bundles the correct binary per target. The failure now surfaces at build time instead of on a user’s machine.
+
+The general instinct: once a bug only reproduces in one environment, move the check into the build or the pipeline so it cannot quietly come back.
+
+### Collaboration
+
+Prefers collaborative work and is comfortable either way. Has both led and followed: led a team of 6 interns at AI Camp to ship a production LLM feature, built the portfolio site and its tooling solo end to end, and currently owns whole systems end to end at Zero Sum Defense.
+
+### Code review
+
+Works in a shared monorepo where the boundary between one engineer’s work and another’s matters more than the code on either side of it. Owned the native binary packaging for a client feature that teammates authored, which meant agreeing on the seam between the two rather than landing changes independently. Applies the same habit to agent-generated code, reviewing it before it ships rather than accepting output wholesale.
+
+### Learning speed
+
+Reached shipping production Rust within months of first using it professionally. Built and deployed a working Discord bot in 3 days.
 
 ---
 
@@ -232,5 +246,6 @@ Examples:
 
 - Open to relocation: yes
 - Looking for: full-time
-- Ideal role type: [frontend / backend / full-stack / infrastructure / ML]
-- Industries of interest: [e.g. fintech, developer tools, healthcare tech]
+- Ideal role type: open. Strongest in infrastructure, platform, and cloud engineering, with full-stack and AI/LLM integration experience alongside it. As a recent graduate, deliberately open to a range of engineering roles rather than narrowly targeting one.
+- Company size preference: prefers a larger company at this stage, primarily to build a wider professional network. Not closed to startups.
+- Industries of interest: no strong constraint. Current work is in security and identity, which is the most directly transferable domain.
