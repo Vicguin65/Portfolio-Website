@@ -18,7 +18,7 @@ Relevant coursework: Data Structures, Algorithms, Software Design and Documentat
 
 ### Zero Sum Defense — Member of Technical Staff (July 2025 – Present)
 
-Minneapolis, MN
+Minneapolis, MN (company headquarters). Tyler works fully remotely from Reno, NV.
 
 Actualize is Zero Sum Defense’s identity platform.
 
@@ -244,6 +244,7 @@ Reached shipping production Rust within months of first using it professionally.
 
 ## Other Context for the Agent
 
+- Currently based in: Reno, NV, working remotely
 - Open to relocation: yes
 - Looking for: full-time
 - Ideal role type: open. Strongest in infrastructure, platform, and cloud engineering, with full-stack and AI/LLM integration experience alongside it. As a recent graduate, deliberately open to a range of engineering roles rather than narrowly targeting one.
