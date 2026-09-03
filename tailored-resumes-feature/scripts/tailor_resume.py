@@ -27,6 +27,7 @@ REPO_ROOT = FEATURE_ROOT.parent
 sys.path.insert(0, str(REPO_ROOT / "backend"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import ats  # noqa: E402
 from app.context import fetch_resume_text  # noqa: E402
 from resume_pdf import overflow_lines, write_pdf  # noqa: E402
 
@@ -126,7 +127,9 @@ a knowledge gap instead.
 2. Tailor by selection and emphasis, not fabrication. The knowledge base holds far more \
 detail than fits on one page. Your job is to choose the experiences that matter for THIS \
 role, lead with them, and phrase them in the vocabulary the job description uses, as long \
-as the rephrasing stays true to what actually happened.
+as the rephrasing stays true to what actually happened. The ATS Keywords block below the \
+job description lists the terms it leans on hardest. Treat that as vocabulary guidance for \
+work Tyler has actually done, never as a checklist to satisfy.
 
 3. Prefer specifics. A bullet with a number, a scale, or a named technology beats a vague \
 one. The knowledge base has metrics; use them.
@@ -218,13 +221,18 @@ bullet you retain fully intact: shorten by removing material, not by truncating 
 MAX_ATTEMPTS = 3
 
 
-def tailor(client: anthropic.Anthropic, jd_text: str, resume_text: str, knowledge_base: str) -> TailoredResume:
+def tailor(
+    client: anthropic.Anthropic,
+    jd_text: str,
+    resume_text: str,
+    knowledge_base: str,
+    keywords: list[ats.Keyword],
+) -> TailoredResume:
     system = SYSTEM_PROMPT.format(resume_text=resume_text, knowledge_base=knowledge_base)
-    base_prompt = f"Job Description:\n\n{jd_text}"
+    base_prompt = f"Job Description:\n\n{jd_text}\n{ats.prompt_block(keywords)}"
     prompt = base_prompt
     last_error = None
-    best = None
-    best_over = None
+    drafts: list[tuple[TailoredResume, int, ats.Coverage]] = []
 
     for attempt in range(MAX_ATTEMPTS):
         try:
@@ -256,19 +264,31 @@ def tailor(client: anthropic.Anthropic, jd_text: str, resume_text: str, knowledg
             continue
 
         over = overflow_lines(result)
-        if not over:
+        coverage = ats.analyze(jd_text, result, keywords)
+        drafts.append((result, over, coverage))
+        if not over and not coverage.needs_revision:
             return result
 
-        if best_over is None or over < best_over:
-            best, best_over = result, over
-        last_error = TailoringError(f"resume runs {best_over} line(s) past one page")
-        if attempt < MAX_ATTEMPTS - 1:
-            print(f"  Runs {over} line(s) past one page. Asking for a tighter draft.")
-        prompt = base_prompt + TRIM_INSTRUCTION.format(n=over + 1)
+        if attempt == MAX_ATTEMPTS - 1:
+            break
 
-    if best is not None:
-        print(f"  Warning: {last_error}. Keeping the tightest draft.")
-        return best
+        faults = []
+        prompt = base_prompt
+        if over:
+            faults.append(f"runs {over} line(s) past one page")
+            prompt += TRIM_INSTRUCTION.format(n=over + 1)
+        if coverage.needs_revision:
+            faults.append(f"misses {len(coverage.targets)} keyword(s)")
+            prompt += ats.revision_instruction(coverage.targets)
+        print(f"  Draft {' and '.join(faults)}. Asking for a revision.")
+
+    if drafts:
+        # One page is a hard constraint; keyword coverage is a preference between drafts
+        # that already fit, so an overflowing draft never wins on keywords alone.
+        result, over, _ = min(drafts, key=lambda d: (bool(d[1]), d[1], -d[2].score))
+        if over:
+            print(f"  Warning: best draft still runs {over} line(s) past one page. Keeping it.")
+        return result
     raise TailoringError(str(last_error))
 
 
@@ -299,7 +319,7 @@ def sanitize(resume: TailoredResume) -> TailoredResume:
     return resume
 
 
-def render_markdown(result: TailoredResume, jd_path: Path) -> str:
+def render_markdown(result: TailoredResume, jd_path: Path, coverage: ats.Coverage) -> str:
     title = result.role_title
     if result.company.lower() not in title.lower():
         title = f"{title} at {result.company}"
@@ -350,6 +370,8 @@ def render_markdown(result: TailoredResume, jd_path: Path) -> str:
             lines += [f"### {gap.requirement}  `{gap.severity}`", "", gap.question, ""]
     else:
         lines.append("None. The knowledge base covers this role.")
+
+    lines += ["", *ats.markdown_section(coverage)]
 
     return "\n".join(lines) + "\n"
 
@@ -420,16 +442,18 @@ def main() -> int:
             print(f"{jd_path.name}: empty, skipping.")
             continue
 
-        print(f"Tailoring for {jd_path.name}...")
+        keywords = ats.extract_keywords(jd_text)
+        print(f"Tailoring for {jd_path.name}... ({len(keywords)} ATS keywords extracted)")
         try:
-            result = sanitize(tailor(client, jd_text, resume_text, knowledge_base))
+            result = sanitize(tailor(client, jd_text, resume_text, knowledge_base, keywords))
         except (TailoringError, anthropic.APIError) as exc:
             print(f"  Failed: {exc}\n", file=sys.stderr)
             failures += 1
             continue
 
+        coverage = ats.analyze(jd_text, result, keywords)
         md_path = OUT_DIR / f"{jd_path.stem}.md"
-        md_path.write_text(render_markdown(result, jd_path), encoding="utf-8")
+        md_path.write_text(render_markdown(result, jd_path, coverage), encoding="utf-8")
 
         company = result.company if result.company.lower() != "unknown" else jd_path.stem
         pdf_path = OUT_DIR / f"Du_Tyler_Resume_{slug(company)}.pdf"
@@ -438,6 +462,7 @@ def main() -> int:
         print(f"  {result.role_title} at {result.company} | match: {result.match_strength}")
         print(f"  Wrote {md_path.relative_to(REPO_ROOT)}")
         print(f"  Wrote {pdf_path.relative_to(REPO_ROOT)}")
+        print(ats.format_report(coverage))
         report_gaps(result)
 
     return 1 if failures else 0

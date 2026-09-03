@@ -20,8 +20,9 @@ from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import ats  # noqa: E402
 from resume_pdf import overflow_lines, write_pdf  # noqa: E402
-from tailor_resume import OUT_DIR, ResumeEntry, ResumeHeader, ResumeSection, slug  # noqa: E402
+from tailor_resume import JD_DIR, JD_SUFFIXES, OUT_DIR, ResumeEntry, ResumeHeader, ResumeSection, slug  # noqa: E402
 
 COMPANY_RE = re.compile(r"<!--\s*company:\s*(.+?)\s*-->", re.IGNORECASE)
 ENTRY_RE = re.compile(r"^\*\*(.+?)\*\*\s*(?:\|\s*(.+))?$")
@@ -141,6 +142,18 @@ def company_of(text: str, md_path: Path) -> str:
     return md_path.stem
 
 
+def job_description_for(md_path: Path) -> Path | None:
+    """The description this resume was tailored from, if it is still around.
+
+    tailor_resume.py names its output after the description, so the stem is the link.
+    """
+    for suffix in JD_SUFFIXES:
+        candidate = JD_DIR / f"{md_path.stem}{suffix}"
+        if candidate.exists():
+            return candidate
+    return None
+
+
 def render(md_path: Path, out_path: Path | None) -> int:
     text = md_path.read_text(encoding="utf-8")
     resume = parse_markdown(text)
@@ -154,6 +167,13 @@ def render(md_path: Path, out_path: Path | None) -> int:
     bullets = sum(len(e.bullets) for s in resume.sections for e in s.entries)
     print(f"  {len(resume.sections)} sections, {entries} entries, {bullets} bullets")
     print(f"  Wrote {out_path}")
+
+    jd_path = job_description_for(md_path)
+    if jd_path:
+        # Score the edited body, not the file: the notes and gap questions below it name
+        # the very keywords being counted.
+        coverage = ats.analyze(jd_path.read_text(encoding="utf-8"), resume)
+        print(ats.format_report(coverage))
 
     over = overflow_lines(resume)
     if over:

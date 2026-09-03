@@ -11,6 +11,7 @@ tailored-resumes-feature/
     tailor_resume.py    Calls Claude, writes the Markdown and the PDF
     render_resume.py    Rebuilds a PDF from a hand-edited Markdown file
     resume_pdf.py       The PDF renderer (layout matched to Du_Tyler_Resume.pdf)
+    ats.py              Keyword extraction and coverage scoring, and a standalone audit
   requirements.txt      Local tooling deps; the Lambda does not install these
 ```
 
@@ -39,6 +40,10 @@ python tailored-resumes-feature/scripts/tailor_resume.py path/to/jd.md  # just o
 # 3. Optionally edit tailored-resumes/<jd-name>.md, then rebuild its PDF
 python tailored-resumes-feature/scripts/render_resume.py                # every .md
 python tailored-resumes-feature/scripts/render_resume.py salesforce.md  # just one
+
+# 4. Audit any resume against a description's keywords, without calling the API
+python tailored-resumes-feature/scripts/ats.py salesforce
+python tailored-resumes-feature/scripts/ats.py salesforce --all
 ```
 
 A bare filename passed to `render_resume.py` resolves inside `tailored-resumes/`.
@@ -52,11 +57,39 @@ resume.
 
 Each run writes two files:
 
-- `<jd-name>.md`, the resume plus tailoring notes and a **Knowledge Base Gaps** section
+- `<jd-name>.md`, the resume plus tailoring notes, a **Knowledge Base Gaps** section, and
+  an **ATS Keyword Coverage** section
 - `Du_Tyler_Resume_<Company>.pdf`, the resume alone, held to one page
 
 Answering the gap questions in `knowledge_base.md` (then `aws s3 cp`-ing it up) improves
 both this tool and the Ask Tyler agent on the site.
+
+## ATS keywords
+
+Most resumes are filtered by software before a person reads them, and that software does
+not read: it looks for the description's own words. `ats.py` models it. It pulls the terms
+out of a description, tiers them by how hard the description leans on each one, and checks
+which ones a resume actually contains.
+
+Tailoring uses this in two places. The ranked list goes into the prompt, so the model
+phrases real experience in the description's vocabulary: drift correction becomes
+monitoring when that is the word the job uses. Then every draft is scored, and a draft
+that misses a critical term gets sent back, in the same retry loop that fixes page
+overflow. Fitting on one page still wins over a keyword.
+
+The honesty rule does not bend for keywords. A term the knowledge base cannot support
+stays off the resume and turns into a gap question instead: a keyword that gets you a
+phone screen you cannot survive is worse than a miss.
+
+Run it on its own to audit a resume you already have, including the untailored base:
+
+```bash
+python tailored-resumes-feature/scripts/ats.py solace --resume Du_Tyler_Resume_Base.pdf
+```
+
+It also flags knockouts, the rules that reject a resume before any keyword is scored: a
+missing phone number, no work authorization line where the description raises it, and a
+location outside the radius of an onsite role.
 
 ## Editing before you send
 
