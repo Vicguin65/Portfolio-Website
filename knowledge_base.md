@@ -189,6 +189,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 - **HashiCorp Terraform Associate**
 - **GIAC Foundational Cybersecurity Technologies (GFACT)**
 - **Associate Google Workspace Administrator**
+- **SolidWorks Certified Associate (CSWA)** — License C-6G7NTRA9XS, obtained May 27, 2021. CAD/mechanical design certification. Not part of current software work, but relevant to hardware-adjacent or aerospace roles.
 
 ### Awards
 
