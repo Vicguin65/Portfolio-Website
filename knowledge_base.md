@@ -14,6 +14,21 @@ Relevant coursework: Data Structures, Algorithms, Software Design and Documentat
 
 ---
 
+## Extracurriculars & Technical Teams
+
+### FIRST Robotics Competition, Team 5480 FYRE (approx. 2017 to 2021)
+
+Reno, NV. High school, alongside a four-year engineering program.
+
+Role: Electrical Controls and Programming Lead, on the programming subteam.
+
+- Led robot programming and electrical controls across competition seasons, owning the code and the control wiring that had to work on real hardware under a competition deadline
+- Helped open a K-12 robotics center in the former Southside School building in Reno, creating a dedicated space for students in the neighborhood to take part in the program. Covered by This Is Reno in August 2021: https://thisisreno.com/2021/08/new-robotics-center-for-students-opens-in-old-southside-school-building/. Also featured on the portfolio site at /features/fyre-robotics-feature
+- Source of Tyler's hands-on shop experience: 3D printers, drills and drill presses, and basic manual mill and lathe operation. Beginner level and not used since high school, but relevant grounding for hardware-adjacent or aerospace applications
+- The SolidWorks CSWA certification (May 2021) comes from this same period
+
+---
+
 ## Work Experience
 
 ### Zero Sum Defense — Member of Technical Staff (July 2025 – Present)
@@ -189,7 +204,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 - **HashiCorp Terraform Associate**
 - **GIAC Foundational Cybersecurity Technologies (GFACT)**
 - **Associate Google Workspace Administrator**
-- **SolidWorks Certified Associate (CSWA)** — License C-6G7NTRA9XS, obtained May 27, 2021. CAD/mechanical design certification. Not part of current software work, but relevant to hardware-adjacent or aerospace roles.
+- **SolidWorks Certified Associate (CSWA)**. License C-6G7NTRA9XS, obtained May 27, 2021. CAD/mechanical design certification. Not part of current software work, but relevant to hardware-adjacent or aerospace roles.
 
 ### Awards
 
