@@ -38,14 +38,14 @@ Minneapolis, MN (company headquarters). Tyler works fully remotely from Reno, NV
 Actualize is Zero Sum Defense’s identity platform.
 
 - Engineered and deployed the Actualize platform across multi-cloud environments (AWS, GCP, Azure, Cloudflare), ensuring high availability and cross-provider compatibility
-- Built the automated AWS account provisioning pipeline that runs whenever a customer signs up, replacing a manual setup that took roughly 25 minutes per account; it now supports 50+ account creations daily
+- Built the automated AWS account provisioning pipeline that runs whenever a customer signs up, replacing a manual setup that took roughly 25 minutes per account with a fully hands-off flow (zero manual steps); it now supports 50+ account creations daily
 - Developed Terraform-based infrastructure-as-code solutions to standardize deployments across AWS, GCP, and Azure, reducing configuration drift
 - Automated CI/CD pipelines to streamline deployment workflows and accelerate feature releases
-- Designed and implemented a health checker that solves configuration drift in single-tenant infrastructure. Triggered weekly on an EventBridge schedule, it compares each tenant’s configuration against the expected state and self-corrects any drift, keeping every tenant in sync without giving up the blast-radius isolation that single-tenancy provides
+- Designed and implemented a health checker that solves configuration drift in single-tenant infrastructure. Triggered weekly on an EventBridge schedule, it compares each tenant’s configuration against the expected state and self-corrects any drift, keeping every tenant in sync without giving up the blast-radius isolation that single-tenancy provides. On its first run it caught 200+ misconfigured tenants
 - Contributed to the Actualize desktop client, a Tauri application with a React and TypeScript frontend and a Rust backend, including packaging the native binaries its hardware-token authentication depends on so the flow works on a clean install
 - Built a browser-automation flow for the client’s in-app payment feature, handling multi-step checkout and additional verification steps
 - Use Claude Code daily as a core part of the development workflow, applying agentic AI coding to infrastructure automation, platform engineering, and feature delivery
-  Technologies used: AWS, GCP, Azure, Cloudflare, Terraform, CI/CD, Python, Rust, Tauri, React, TypeScript, Claude Code
+  Technologies used: AWS, DynamoDB, EventBridge, GCP, Azure, Cloudflare, Terraform, CI/CD, Python, Rust, Tauri, React, TypeScript, Claude Code
 
 ### IBM — Software Engineering Intern (January 2024 – August 2024)
 
@@ -166,7 +166,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 ### Cloud & Infrastructure
 
-- **AWS** — Most-used cloud platform. Production experience at Zero Sum Defense and IBM. Hands-on with: Lambda, API Gateway, S3, CloudFront, SES, EC2, IAM, Route53, ACM, CloudFormation. Automated provisioning of 50+ accounts daily at ZSD.
+- **AWS** — Most-used cloud platform. Production experience at Zero Sum Defense and IBM. Hands-on with: Lambda, API Gateway, S3, CloudFront, SES, EC2, IAM, Route53, ACM, CloudFormation, DynamoDB, EventBridge. Automated provisioning of 50+ accounts daily at ZSD.
 - **GCP** — Used in production at Zero Sum Defense for multi-cloud deployments.
 - **Azure** — Used in production at Zero Sum Defense for multi-cloud deployments.
 - **Cloudflare** — Used at Zero Sum Defense for the Actualize platform.
@@ -176,8 +176,9 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 ### Databases
 
+- **DynamoDB** — Strongest and most-used database. Production use at Zero Sum Defense, where it keeps track of tenants on the Actualize platform.
 - **PostgreSQL** — Used in Grouping API and Accessible Routes.
-- [TODO: any MySQL, MongoDB, Redis, DynamoDB experience?]
+- [TODO: any MySQL, MongoDB, Redis experience?]
 
 ### AI / ML
 
@@ -217,9 +218,9 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 ## Accomplishments & Metrics
 
-- Automated provisioning of **50+ AWS accounts daily** at Zero Sum Defense, replacing a manual setup that took roughly **25 minutes per account**
+- Automated provisioning of **50+ AWS accounts daily** at Zero Sum Defense, replacing a manual setup that took roughly **25 minutes per account** with a fully hands-off flow
 - Deployed production platform across **4 cloud providers** (AWS, GCP, Azure, Cloudflare)
-- Solved configuration drift in single-tenant infrastructure at Zero Sum Defense with a **weekly self-healing health checker** that detects and corrects drift on a schedule
+- Solved configuration drift in single-tenant infrastructure at Zero Sum Defense with a **weekly self-healing health checker** that detects and corrects drift on a schedule; it caught **200+ misconfigured tenants** on its first run
 - Saved **100+ hours per hiring season** via Lever API automation
 - Trained a resume classifier with **88% accuracy** on 1,700+ records
 - Educational bot deployed in **8 courses**, reaching **60+ students per course** at AI Camp
