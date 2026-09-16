@@ -38,9 +38,9 @@ Minneapolis, MN (company headquarters). Tyler works fully remotely from Reno, NV
 Actualize is Zero Sum Defense’s identity platform.
 
 - Engineered and deployed the Actualize platform across multi-cloud environments (AWS, GCP, Azure, Cloudflare), ensuring high availability and cross-provider compatibility
-- Built the automated AWS account provisioning pipeline that runs whenever a customer signs up, replacing a manual setup that took roughly 25 minutes per account with a fully hands-off flow (zero manual steps); it now supports 50+ account creations daily
+- Built the automated AWS account provisioning pipeline that runs whenever a customer signs up, replacing a manual setup that took roughly 25 minutes per account with a fully hands-off flow (zero manual steps); it runs at 50+ account creations daily and had provisioned 19,889 accounts as of September 15, 2026 (count from the DynamoDB tenant table)
 - Developed Terraform-based infrastructure-as-code solutions to standardize deployments across AWS, GCP, and Azure, reducing configuration drift
-- Automated CI/CD pipelines to streamline deployment workflows and accelerate feature releases
+- Owned native binary packaging for the desktop client: wrote the per-target build scripts (shell and PowerShell) for the bundled binaries behind hardware-token authentication (pkcs11-tool, OpenSSL, the AWS CLI, and an STS helper) that the GitLab CI binary-build jobs run for Windows, macOS, and Linux, so a bad binary surfaces in CI rather than on a user's machine. Built the ephemeral Windows EC2 GitLab runner autoscaler in Terraform (March 2026) that the client's Windows builds run on, and maintained the Windows x64 build job. Did NOT author the Tauri CI pipeline itself (validation and per-platform build orchestration were a teammate's); do not claim it. Client validation (typecheck, vitest, one cargo test module) runs on every push touching the client but is non-blocking; full multi-OS builds run on release version bumps or manual trigger, not on every change
 - Designed and implemented a health checker that solves configuration drift in single-tenant infrastructure. Triggered weekly on an EventBridge schedule, it compares each tenant’s configuration against the expected state and self-corrects any drift, keeping every tenant in sync without giving up the blast-radius isolation that single-tenancy provides. On its first run it caught 200+ misconfigured tenants
 - Contributed to the Actualize desktop client, a Tauri application with a React and TypeScript frontend and a Rust backend, including packaging the native binaries its hardware-token authentication depends on so the flow works on a clean install
 - Built a browser-automation flow for the client’s in-app payment feature, handling multi-step checkout and additional verification steps
@@ -67,7 +67,7 @@ Interned across multiple semesters (not continuous, split around school terms), 
 
 - Automated hiring workflows using Lever’s API, saving over 100 hours per hiring season; the tooling ran across two full hiring cycles
 - Trained a scikit-learn resume classifier on 1,700+ candidate records, achieving 88% accuracy over its first six months in production; model hosted on AWS S3
-- Developed REST APIs for a PostgreSQL database that improved student grouping efficiency, impacting over 300 students
+- Developed REST APIs for a PostgreSQL database that grouped over 300 students into cohorts by a vector similarity score over self-rated skills
 - Led a team of 6 interns to implement NVIDIA NeMo guardrails with GPT-3.5-turbo for an educational Python/Colang bot that taught HTML
 - Bot was deployed in 8 courses, instructing 60+ students per course
   Technologies used: Python, Django, PostgreSQL, Scikit-Learn, Lever API, OpenAI GPT-3.5-turbo, NVIDIA NeMo, BeautifulSoup4, Selenium, AWS S3
@@ -79,7 +79,7 @@ Interned across multiple semesters (not continuous, split around school terms), 
 ### Actualize Desktop Client (November 2025 – present) — Zero Sum Defense
 
 Cross-platform desktop application for the Actualize platform, built with Tauri: React and TypeScript in the frontend, Rust for the native backend.
-Contributed across the client and owned packaging of the native binaries behind its hardware-token authentication, resolving the library-loading failures that broke the flow on machines without a developer toolchain installed.
+Contributed across the client and owned packaging of the native binaries behind its hardware-token authentication, resolving the library-loading failures that broke the flow on machines without a developer toolchain installed. Wrote the per-target build scripts (shell and PowerShell) that GitLab CI runs to compile and bundle those binaries for Windows, macOS, and Linux, so a bad binary surfaces in CI. Also built the ephemeral Windows EC2 GitLab runner autoscaler (Terraform) the Windows builds run on.
 Also built a browser-automation flow for the in-app payment feature, covering multi-step checkout and additional verification steps.
 Technologies: Rust, Tauri, React, TypeScript, AWS SDK for Rust
 
@@ -132,7 +132,7 @@ Technologies: Python, BeautifulSoup4, Selenium, OpenAI GPT-3.5-turbo
 
 ### Grouping API for Camp Students (January 2023 – April 2023) — AI Camp
 
-Built for AI Camp. Django REST API to model and manage groups of students. Implemented a grouping algorithm that matches students by survey similarity score. Processed data for ~300 students; directly improved student grouping efficiency across AI Camp programs.
+Built for AI Camp. Django REST API to model and manage groups of students. Implemented the grouping algorithm: each student rated themselves 1 to 5 on a set of skills (Python, NLP, computer vision, data science, and others), those ratings formed a skill vector, and cohorts were built from a similarity score between vectors (Tyler does not recall whether cosine, Euclidean, or dot product; do not name one). Tyler regards this as modest work and prefers not to lead with it; on resumes keep it to a phrase, not a bullet of its own. Processed data for ~300 students; directly improved student grouping efficiency across AI Camp programs.
 Technologies: Python, Django, PostgreSQL
 
 ### Hiring Management System Automation (May 2022 – August 2022) — AI Camp
@@ -156,7 +156,8 @@ Technologies: Python, Scikit-Learn, AWS S3
 ### Frontend
 
 - **React** (3+ years) — Built multiple production applications. Comfortable with hooks, React Router, state management, and Vite tooling.
-- [TODO: any design systems, testing frameworks, etc.?]
+- [TODO: any design systems?]
+- Testing: no authored unit or integration test suites on record as of September 2026 (checked the Actualize repo history). Do not claim test-writing experience. The client's CI runs vitest and a cargo test module written by teammates.
 
 ### Backend
 
@@ -171,7 +172,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 - **Azure** — Used in production at Zero Sum Defense for multi-cloud deployments.
 - **Cloudflare** — Used at Zero Sum Defense for the Actualize platform.
 - **Terraform** — Production use at Zero Sum Defense (multi-cloud IaC across AWS/GCP/Azure) and personal projects; familiar with modules, state management, providers.
-- **CI/CD** — Automated deployment pipelines at Zero Sum Defense.
+- **GitLab CI/CD** — At Zero Sum Defense: per-target bundled-binary build scripts for the Tauri desktop client's Windows, macOS, and Linux jobs, fixes to the Windows x64 build job, and the ephemeral Windows EC2 runner autoscaler (Terraform). Did not author the Tauri pipeline itself.
 - **Docker** — [TODO: add context — used for local dev? CI/CD? deployments?]
 
 ### Databases
@@ -218,7 +219,7 @@ Technologies: Python, Scikit-Learn, AWS S3
 
 ## Accomplishments & Metrics
 
-- Automated provisioning of **50+ AWS accounts daily** at Zero Sum Defense, replacing a manual setup that took roughly **25 minutes per account** with a fully hands-off flow
+- Automated provisioning of **50+ AWS accounts daily** at Zero Sum Defense, replacing a manual setup that took roughly **25 minutes per account** with a fully hands-off flow; **19,889 accounts** provisioned as of September 15, 2026
 - Deployed production platform across **4 cloud providers** (AWS, GCP, Azure, Cloudflare)
 - Solved configuration drift in single-tenant infrastructure at Zero Sum Defense with a **weekly self-healing health checker** that detects and corrects drift on a schedule; it caught **200+ misconfigured tenants** on its first run
 - Saved **100+ hours per hiring season** via Lever API automation
