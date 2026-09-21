@@ -59,6 +59,20 @@ Two projects across two terms: the AWS Identity Store REST API (January – May 
 - Built a Terraform automation tool for the IBM Cloud team that provisions an AWS VPC with 2 public and 2 private subnets and 4 t2.large Ubuntu servers hosting a data science React application, and automated deployment of application updates onto it
   Technologies used: Python, AWS Lambda, AWS CloudFormation, AWS Identity Store SDK, SCIM, HCP Terraform, AWS VPC, React
 
+### Rensselaer Polytechnic Institute — Undergraduate Mentor (August 2023 – August 2024)
+
+Troy, NY
+
+Undergraduate mentor (teaching assistant) for three courses across three consecutive terms, one course per term. The Spring and Summer 2024 terms overlapped with the IBM internship.
+
+- Foundations of Computer Science (Fall 2023): RPI's discrete mathematics course for computer science majors
+- Introduction to Algorithms (Spring 2024)
+- RCOS, the Rensselaer Center for Open Source (Summer 2024): RPI's program in which students build and contribute to open-source software projects for course credit
+- Held 4 to 6 hours of office hours each week (varied by term), providing one-on-one academic support to students
+- Ran 2 hours of lab sessions each week
+- Graded exams and homework
+  Skills exercised: technical communication, explaining discrete math and algorithms concepts to students, mentoring, evaluating student work
+
 ### AI Camp — Software Engineer Intern (May 2022 – December 2023)
 
 Palo Alto, CA
