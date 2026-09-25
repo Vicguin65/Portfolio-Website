@@ -135,23 +135,3 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(79, 110, 247, 0.48);
 }
-
-/* ── Scroll hint ── */
-.scroll-hint {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.scroll-line {
-  width: 1px;
-  height: 52px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-  animation: scrollPulse 2.2s ease-in-out infinite;
-}
-
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.25; }
-  50%       { opacity: 0.9;  }
-}

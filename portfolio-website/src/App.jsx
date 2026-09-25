@@ -29,10 +29,6 @@ function App() {
           Explore my work <span aria-hidden="true">→</span>
         </Link>
       </div>
-
-      <div className="scroll-hint" aria-hidden="true">
-        <div className="scroll-line" />
-      </div>
     </div>
   );
 }
