@@ -56,7 +56,7 @@ class KnowledgeGap(BaseModel):
 class ResumeHeader(BaseModel):
     name: str = Field(description="Tyler's full name, exactly as it appears on the current resume. Never empty.")
     contact_lines: list[str] = Field(
-        description="The contact lines under the name, copied from the current resume. Normally two: location/email/site, then the profile links.",
+        description="The contact lines under the name, copied from the current resume. Normally two: location/phone/email/site, then the profile links. If the current resume has no phone number, add the one from the knowledge base Contact section after the location.",
     )
 
 

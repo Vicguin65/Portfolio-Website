@@ -5,6 +5,18 @@ Upload to S3 after any update: `aws s3 cp knowledge_base.md s3://whoistylerdu.co
 
 ---
 
+## Contact
+
+- Phone: (775) 997-8654
+- Email: tyleryeedu@gmail.com
+- Website: whoistylerdu.com
+- LinkedIn: linkedin.com/in/tyler-du-link
+- GitHub: github.com/Vicguin65
+
+Resume contact line format: `Reno, NV | (775) 997-8654 | tyleryeedu@gmail.com | whoistylerdu.com`
+
+---
+
 ## Education
 
 **Rensselaer Polytechnic Institute (RPI)** — Troy, NY
@@ -117,7 +129,8 @@ Technologies: React, Django, CSS, AWS EC2
 
 Open-source project in collaboration with IBM's cloud team. Built a REST API layer on top of AWS Identity Center (formerly SSO) to simplify identity management operations.
 Serves 100+ IBM teams worldwide on a daily basis. Works around a gap in AWS’s SCIM API, which omits several User fields, by merging the SCIM response with data from the AWS Identity Store Python SDK so callers get a complete user record from one endpoint.
-[TODO: was this merged upstream, and is it still in use?]
+Still in use as of September 2026.
+[TODO: was this merged upstream?]
 GitHub: https://github.com/Vicguin65/IBM-Identity-Center-API
 Technologies: Python, AWS Lambda, AWS CloudFormation
 
