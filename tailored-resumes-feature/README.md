@@ -59,7 +59,8 @@ Each run writes two files:
 
 - `<jd-name>.md`, the resume plus tailoring notes, a **Knowledge Base Gaps** section, and
   an **ATS Keyword Coverage** section
-- `Du_Tyler_Resume_<Company>.pdf`, the resume alone, held to one page
+- `Du_Tyler_Resume_<Company>.pdf`, the resume alone, held to one page and filled to
+  within 3 blank lines of the bottom (`MAX_BLANK_LINES` in `resume_pdf.py`)
 
 Answering the gap questions in `knowledge_base.md` (then `aws s3 cp`-ing it up) improves
 both this tool and the Ask Tyler agent on the site.
@@ -75,7 +76,8 @@ Tailoring uses this in two places. The ranked list goes into the prompt, so the 
 phrases real experience in the description's vocabulary: drift correction becomes
 monitoring when that is the word the job uses. Then every draft is scored, and a draft
 that misses a critical term gets sent back, in the same retry loop that fixes page
-overflow. Fitting on one page still wins over a keyword.
+overflow or leaves too much blank space. Fitting on one page wins over filling it, and
+both win over a keyword.
 
 The honesty rule does not bend for keywords. A term the knowledge base cannot support
 stays off the resume and turns into a gap question instead: a keyword that gets you a
@@ -108,4 +110,5 @@ An unedited file re-renders to an identical PDF, so editing is safe.
 | `**bold**` inside a bullet | bold text |
 
 Reordering and deleting work too. Notes and gaps below the resume are ignored. The
-renderer warns if an edit pushes the resume past one page.
+renderer warns if an edit pushes the resume past one page, or leaves more than 3 blank
+lines at the bottom.

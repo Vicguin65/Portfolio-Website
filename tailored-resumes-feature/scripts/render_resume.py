@@ -21,7 +21,7 @@ from types import SimpleNamespace
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ats  # noqa: E402
-from resume_pdf import overflow_lines, write_pdf  # noqa: E402
+from resume_pdf import MAX_BLANK_LINES, blank_lines, overflow_lines, write_pdf  # noqa: E402
 from tailor_resume import JD_DIR, JD_SUFFIXES, OUT_DIR, ResumeEntry, ResumeHeader, ResumeSection, slug  # noqa: E402
 
 COMPANY_RE = re.compile(r"<!--\s*company:\s*(.+?)\s*-->", re.IGNORECASE)
@@ -178,6 +178,10 @@ def render(md_path: Path, out_path: Path | None) -> int:
     over = overflow_lines(resume)
     if over:
         print(f"  Warning: runs {over} line(s) past one page. Trim a bullet and run again.")
+    else:
+        blank = blank_lines(resume)
+        if blank > MAX_BLANK_LINES:
+            print(f"  Warning: leaves {blank} blank line(s) at the bottom (limit {MAX_BLANK_LINES}). Add a bullet and run again.")
     return over
 
 

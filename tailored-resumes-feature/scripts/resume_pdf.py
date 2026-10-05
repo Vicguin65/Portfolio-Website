@@ -250,3 +250,19 @@ def write_pdf(resume, path, title="Tyler Du Resume") -> None:
 def page_count(resume) -> int:
     """Pages the resume actually renders to, measured by building it."""
     return _build(resume, io.BytesIO()).page
+
+
+# Most blank body lines allowed at the foot of the page before a draft counts as sparse.
+MAX_BLANK_LINES = 3
+
+
+def blank_lines(resume) -> int:
+    """Whole body lines of empty space left at the bottom of the page. 0 if it overflows.
+
+    Measured from the rendered layout: after the build, the frame's cursor sits where the
+    last flowable ended, so its distance to the frame's bottom edge is the unused space.
+    """
+    doc = _build(resume, io.BytesIO())
+    if doc.page > 1:
+        return 0
+    return int((doc.frame._y - doc.frame._y1p) // LEADING)

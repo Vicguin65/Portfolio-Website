@@ -29,7 +29,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ats  # noqa: E402
 from app.context import fetch_resume_text  # noqa: E402
-from resume_pdf import overflow_lines, write_pdf  # noqa: E402
+from resume_pdf import MAX_BLANK_LINES, blank_lines, overflow_lines, write_pdf  # noqa: E402
 
 JD_DIR = FEATURE_ROOT / "job-descriptions"
 OUT_DIR = FEATURE_ROOT / "tailored-resumes"
@@ -218,7 +218,24 @@ relevant entry, then the least relevant section. Keep the header intact and keep
 bullet you retain fully intact: shorten by removing material, not by truncating sentences.\
 """
 
-MAX_ATTEMPTS = 3
+FILL_INSTRUCTION = """\
+
+Your previous draft leaves about {blank} blank lines at the bottom of the page, which \
+reads as thin. Produce the same resume about {n} lines longer, so no more than one or two \
+blank lines remain. Fill the space with the most relevant material you left out: restore \
+a strong bullet, add an entry, or widen the skills block, all drawn from the sources. \
+Never pad with filler or restate a bullet you already have, and never go past one page: \
+if nothing relevant is left, leave the space blank.\
+"""
+
+PREVIOUS_DRAFT = """\
+
+Your previous draft, for reference:
+
+{draft}\
+"""
+
+MAX_ATTEMPTS = 4
 
 
 def tailor(
@@ -264,9 +281,11 @@ def tailor(
             continue
 
         over = overflow_lines(result)
+        blank = 0 if over else blank_lines(result)
+        sparse = blank > MAX_BLANK_LINES
         coverage = ats.analyze(jd_text, result, keywords)
-        drafts.append((result, over, coverage))
-        if not over and not coverage.needs_revision:
+        drafts.append((result, over, blank, coverage))
+        if not over and not sparse and not coverage.needs_revision:
             return result
 
         if attempt == MAX_ATTEMPTS - 1:
@@ -277,17 +296,26 @@ def tailor(
         if over:
             faults.append(f"runs {over} line(s) past one page")
             prompt += TRIM_INSTRUCTION.format(n=over + 1)
+        if sparse:
+            faults.append(f"leaves {blank} blank line(s) at the bottom")
+            prompt += FILL_INSTRUCTION.format(blank=blank, n=blank - 1)
         if coverage.needs_revision:
             faults.append(f"misses {len(coverage.targets)} keyword(s)")
             prompt += ats.revision_instruction(coverage.targets)
+        prompt += PREVIOUS_DRAFT.format(draft="\n".join(resume_body_lines(result)))
         print(f"  Draft {' and '.join(faults)}. Asking for a revision.")
 
     if drafts:
-        # One page is a hard constraint; keyword coverage is a preference between drafts
-        # that already fit, so an overflowing draft never wins on keywords alone.
-        result, over, _ = min(drafts, key=lambda d: (bool(d[1]), d[1], -d[2].score))
+        # One page is a hard constraint. Filling the page comes next, then keyword
+        # coverage: an overflowing draft never wins on keywords or fullness alone.
+        result, over, blank, _ = min(
+            drafts,
+            key=lambda d: (bool(d[1]), d[1], max(d[2] - MAX_BLANK_LINES, 0), -d[3].score),
+        )
         if over:
             print(f"  Warning: best draft still runs {over} line(s) past one page. Keeping it.")
+        elif blank > MAX_BLANK_LINES:
+            print(f"  Warning: best draft still leaves {blank} blank line(s) at the bottom. Keeping it.")
         return result
     raise TailoringError(str(last_error))
 
@@ -319,25 +347,9 @@ def sanitize(resume: TailoredResume) -> TailoredResume:
     return resume
 
 
-def render_markdown(result: TailoredResume, jd_path: Path, coverage: ats.Coverage) -> str:
-    title = result.role_title
-    if result.company.lower() not in title.lower():
-        title = f"{title} at {result.company}"
-
-    lines = [
-        f"<!-- company: {result.company} -->",
-        "",
-        f"# {title}",
-        "",
-        f"*Tailored from `{jd_path.name}` | Match: **{result.match_strength}***",
-        "",
-        result.match_reasoning,
-        "",
-        "---",
-        "",
-        f"## {result.header.name}",
-        "",
-    ]
+def resume_body_lines(result: TailoredResume) -> list[str]:
+    """The resume itself as Markdown, in the format render_resume.py parses back."""
+    lines = [f"## {result.header.name}", ""]
     lines += [f"{line}  " for line in result.header.contact_lines]
 
     for section in result.sections:
@@ -355,6 +367,27 @@ def render_markdown(result: TailoredResume, jd_path: Path, coverage: ats.Coverag
             lines.append("")
             lines += [f"- {b}" for b in entry.bullets]
             lines.append("")
+    return lines
+
+
+def render_markdown(result: TailoredResume, jd_path: Path, coverage: ats.Coverage) -> str:
+    title = result.role_title
+    if result.company.lower() not in title.lower():
+        title = f"{title} at {result.company}"
+
+    lines = [
+        f"<!-- company: {result.company} -->",
+        "",
+        f"# {title}",
+        "",
+        f"*Tailored from `{jd_path.name}` | Match: **{result.match_strength}***",
+        "",
+        result.match_reasoning,
+        "",
+        "---",
+        "",
+        *resume_body_lines(result),
+    ]
 
     lines += ["---", "", "## Tailoring Notes", ""]
     lines += [f"- {note}" for note in result.tailoring_notes]
